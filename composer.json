@@ -1,0 +1,52 @@
+{
+    "name": "omnipay/nestpay",
+    "type": "library",
+    "description": "NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library",
+    "keywords": [
+        "nestpay",
+        "est",
+        "Isbank",
+        "Akbank",
+        "Finansbank",
+        "Denizbank",
+        "Kuveytturk",
+        "Halkbank",
+        "Anadolubank",
+        "ING Bank",
+        "Citibank",
+        "Cardplus",
+        "gateway",
+        "merchant",
+        "sanal pos",
+        "turkish pos",
+        "omnipay",
+        "pay",
+        "payment"
+    ],
+    "homepage": "https://github.com/yasinkuyu/omnipay-nestpay",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yasin Kuyu",
+            "email": "yasinkuyu@gmail.com"
+        },
+        {
+            "name": "Omnipay Contributors",
+            "homepage": "https://github.com/yasinkuyu/omnipay-nestpay/contributors"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Omnipay\\NestPay\\" : "src/" }
+    },
+    "require": {
+        "omnipay/common": "~2.0"
+    },
+    "require-dev": {
+        "omnipay/tests": "~2.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}
