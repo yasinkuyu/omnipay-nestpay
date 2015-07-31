@@ -3,8 +3,8 @@
 **NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library**
 
 [![Build Status](https://travis-ci.org/thephpleague/omnipay-nestpay.png?branch=master)](https://travis-ci.org/yasinkuyu/omnipay-nestpay)
-[![Latest Stable Version](https://poser.pugx.org/omnipay/nestpay/version.png)](https://packagist.org/packages/omnipay/nestpay)
-[![Total Downloads](https://poser.pugx.org/omnipay/nestpay/d/total.png)](https://packagist.org/packages/omnipay/nestpay)
+[![Latest Stable Version](https://poser.pugx.org/omnipay/nestpay/version.png)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
+[![Total Downloads](https://poser.pugx.org/omnipay/nestpay/d/total.png)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
 processing library for PHP 5.3+. This package implements NestPay (Turkish Payment Provider) support for Omnipay.
@@ -42,6 +42,18 @@ The following gateways are provided by this package:
     - ING Bank 
     - Citibank 
     - Cardplus
+
+Gateway Methods
+
+    The main methods implemented by gateways are:
+
+    authorize($options) - authorize an amount on the customer's card
+    completeAuthorize($options) - handle return from off-site gateways after authorization
+    capture($options) - capture an amount you have previously authorized
+    purchase($options) - authorize and immediately capture an amount on the customer's card
+    completePurchase($options) - handle return from off-site gateways after purchase
+    refund($options) - refund an already processed transaction
+    void($options) - generally can only be called up to 24 hours after submitting a transaction
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
