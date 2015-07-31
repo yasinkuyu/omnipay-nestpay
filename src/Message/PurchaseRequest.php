@@ -12,6 +12,7 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 class PurchaseRequest extends AbstractRequest
 {
+    
     protected $endpoint = 'http://testsanalpos.est.com.tr/servlet/cc5ApiServer'; 
 
     protected $endpoints = [
@@ -22,63 +23,17 @@ class PurchaseRequest extends AbstractRequest
         'halkbank'       => 'sanalpos.halkbank.com.tr',
         'anadolubank'    => 'anadolusanalpos.est.com.tr'
     ];
-     
-    public function setEndPoint()
-    {
-        return $this->getParameter('endpoint');
-    }
-    
-//    public function getEndPoint($gateway)
-//    {
-//        // est3Dgate
-//        if(!array_key_exists($gateway, $this->endpoints)){
-//            throw new \Exception('Invalid Gateway');
-//        }else{
-//            $this->endpoint = $this->endpoints[$gateway];
-//        }
-//        $this->endpoint = $this->mode == 'TEST' ? 'http://'. $this->endpoints["test"] .'/servlet/cc5ApiServer' : 'http://'.$this->endpoints[$gateway].'/servlet/cc5ApiServer';
-//
-//        return $this->setParameter('endpoint', $gateway);
-//    }
  
-    public function getUserName()
+    public function __construct()
     {
-        return $this->getParameter('name');
-    }
-    
-    public function setUserName($value)
-    {
-        return $this->setParameter('name', $value);
-    }
-    
-    public function getClientId()
-    {
-        return $this->getParameter('clientId');
-    }
-
-    public function setClientId($value)
-    {
-        return $this->setParameter('clientId', $value);
-    }
-
-    public function getPassword()
-    {
-        return $this->getParameter('password');
-    }
-
-    public function setPassword($value)
-    {
-        return $this->setParameter('password', $value);
-    }
-
-    public function getBank()
-    {
-        return $this->getParameter('bank');
-    }
-    
-    public function setBank($value)
-    {
-        return $this->setParameter('bank', $value);
+        $gateway = $this->getBank();
+        
+        if(!array_key_exists($gateway, $this->endpoints)){
+            throw new \Exception('Invalid Gateway');
+        }else{
+            $this->endpoint = $this->endpoints[$gateway];
+        }
+        $this->endpoint = $this->mode == 'TEST' ? 'http://'. $this->endpoints["test"] .'/servlet/cc5ApiServer' : 'http://'.$this->endpoints[$gateway].'/servlet/cc5ApiServer';
     }
     
     public function getData()
