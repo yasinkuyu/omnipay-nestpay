@@ -2,9 +2,10 @@
 
 **NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library**
 
-[![Build Status](https://travis-ci.org/thephpleague/omnipay-nestpay.png?branch=master)](https://travis-ci.org/yasinkuyu/omnipay-nestpay)
-[![Latest Stable Version](https://poser.pugx.org/omnipay/nestpay/version.png)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
-[![Total Downloads](https://poser.pugx.org/omnipay/nestpay/d/total.png)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
+[![Latest Stable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/stable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
+[![Total Downloads](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/downloads)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
+[![Latest Unstable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/unstable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
+[![License](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/license)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
 processing library for PHP 5.3+. This package implements NestPay (Turkish Payment Provider) support for Omnipay.
