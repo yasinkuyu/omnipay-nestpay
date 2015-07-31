@@ -13,6 +13,16 @@ class PurchaseRequest extends AbstractRequest
 {
     protected $endpoint = 'https://testsanalpos.est.com.tr/servlet/cc5ApiServer'; //https://spos.isbank.com.tr/servlet/cc5ApiServer';
 
+    public function getName()
+    {
+        return $this->getParameter('name');
+    }
+    
+    public function setName($value)
+    {
+        return $this->setParameter('name', $value);
+    }
+    
     public function getClientId()
     {
         return $this->getParameter('clientId');

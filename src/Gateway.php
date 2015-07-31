@@ -25,6 +25,16 @@ class Gateway extends AbstractGateway
         );
     }
 
+    public function getName()
+    {
+        return $this->getParameter('name');
+    }
+
+    public function setName($value)
+    {
+        return $this->setParameter('name', $value);
+    }
+
     public function getClientId()
     {
         return $this->getParameter('clientId');
