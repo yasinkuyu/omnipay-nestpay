@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\NestPay;
+<?php namespace Omnipay\NestPay;
 
 use Omnipay\NestPay\Message\CompletePurchaseRequest;
 use Omnipay\NestPay\Message\PurchaseRequest;
@@ -21,6 +19,7 @@ class Gateway extends AbstractGateway
     public function getDefaultParameters()
     {
         return array(
+            'name' => '',
             'clientId' => '',
             'password' => '',
         );
