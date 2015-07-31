@@ -8,8 +8,10 @@
 [![License](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/license)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements NestPay (Turkish Payment Provider) support for Omnipay.
+processing library for PHP 5.3+. This package implements NestPay (Turkey Payment Gateways) support for Omnipay.
 
+```NestPay (Eski adıyla EST) altyapısını kullanan Türkiye bankaları için Omnipay kütüphanesi. Desteklenmesi hedeflenen bankalar; İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus.
+```
 ## Installation
 
 Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply add it
