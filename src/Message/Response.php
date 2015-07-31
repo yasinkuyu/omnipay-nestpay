@@ -3,6 +3,7 @@
 namespace Omnipay\NestPay\Message;
 
 use DOMDocument;
+use SimpleXMLElement;
 use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
@@ -16,49 +17,47 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     public function __construct(RequestInterface $request, $data)
     {
         $this->request = $request;
-
-        $responseDom = new DOMDocument;
-        $responseDom->loadXML($data);
-        $this->data = simplexml_import_dom($responseDom->CC5Response->ProcReturnCode);
-
-        $resultElement = $this->getResultElement();
-        if (!isset($resultElement->CC5Response->ErrMsg)) {
-            throw new InvalidResponseException;
-        }
-    }
-
-    public function getResultElement()
-    {
-        $resultElement = preg_replace('/Response$/', 'Result', $this->data->getName());
-
-        return $this->data->$resultElement;
+        $this->data = SimpleXMLElement($data);
     }
 
     public function isSuccessful()
     {
-        return 0 === (int) $this->getResultElement()->CC5Response->ProcReturnCode;
+        return (string) $this->xml->CC5Response->ProcReturnCode === '00';
     }
 
     public function isRedirect()
     {
-        return 3 === (int) $this->getResultElement()->CC5Response->ErrMsg;
+        return false;//3 === (int) $this->data->error_msg;
     }
 
-    public function getTransactionReference()
+    public function getTransactionId()
     {
-        return (string) $this->data->CC5Response->ProcReturnCode;
+        return $this->data->transid;
     }
 
     public function getMessage()
     {
-        return (string) $this->getResultElement()->response;
+        return $this->data->response + " / "  + $this->data->host_msg;
     }
 
+    public function getError()
+    {
+        return $this->data->return_code;
+    }
 
+    public function getErrorMsg()
+    {
+        return $this->data->error_msg;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
+    }
+    
     public function getRedirectMethod()
     {
         return 'POST';
     }
-
    
 }

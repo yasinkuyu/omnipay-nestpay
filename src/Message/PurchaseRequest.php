@@ -3,7 +3,6 @@
 namespace Omnipay\NestPay\Message;
 
 use DOMDocument;
-use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractRequest;
 
 /**
@@ -11,14 +10,14 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 class PurchaseRequest extends AbstractRequest
 {
-    protected $endpoint = 'https://testsanalpos.est.com.tr/servlet/cc5ApiServer'; //https://spos.isbank.com.tr/servlet/cc5ApiServer';
+    protected $endpoint = 'http://testsanalpos.est.com.tr/servlet/cc5ApiServer'; //https://spos.isbank.com.tr/servlet/cc5ApiServer';
 
-    public function getName()
+    public function getVendorName()
     {
         return $this->getParameter('name');
     }
     
-    public function setName($value)
+    public function setVendorName($value)
     {
         return $this->setParameter('name', $value);
     }
@@ -48,8 +47,6 @@ class PurchaseRequest extends AbstractRequest
         $this->validate('amount', 'card');
         $this->getCard()->validate();
 
-        $data = new SimpleXMLElement('<CC5Request/>');
-
         $data['Name'] = $this->getClientId();
         $data['ClientId'] = $this->getClientId();
         $data['Password'] = $this->getPassword();
@@ -72,16 +69,20 @@ class PurchaseRequest extends AbstractRequest
         $data["ShipTo"] =  '';  
 
         return $data;
+  
     }
 
     public function sendData($data)
     {
-        // TODO: find PSR-0 SOAP library
         $document = new DOMDocument('1.0', 'ISO-8859-9');
-        $envelope = $document->appendChild();
-        
-        $body = $envelope->appendChild();
-        $body->appendChild($document->importNode(dom_import_simplexml($data), true));
+            
+        $root = $document->createElement('CC5Request');
+    
+        foreach($data as $id => $value)
+        {
+            $root->appendChild($document->createElement($id, $value));
+        }
+        $document->appendChild($root);
 
         //post to NestPay
         $headers = array('Content-Type' => 'application/x-www-form-urlencoded');

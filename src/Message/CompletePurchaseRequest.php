@@ -14,14 +14,12 @@ class CompletePurchaseRequest extends PurchaseRequest
     {
         $this->validate('transactionReference', 'amount', 'currency');
 
-        $data = new SimpleXMLElement('<CC5Request/>');
-
         $data['Name'] = $this->getClientId();
         $data['ClientId'] = $this->getClientId();
         $data['Password'] = $this->getPassword();
         $data['Type'] =  'PostAuth';
         $data['OrderId'] = $this->getTransactionId();
-
+        
         return $data;
     }
 }

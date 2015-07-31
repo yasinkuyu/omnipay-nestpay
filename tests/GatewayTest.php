@@ -14,9 +14,9 @@ class GatewayTest extends GatewayTestCase
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
 
         $this->options = array(
+            'name' => 'ISBANKAPI',
             'clientId' => '700100000',
             'password' => 'ISBANK07',
-            'name' => 'ISBANKAPI',
             'amount' => '10.00',
             'returnUrl' => 'http://sanalmagaza.org/return',
             'card' => new CreditCard(array(
