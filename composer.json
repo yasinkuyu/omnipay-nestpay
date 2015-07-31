@@ -1,5 +1,5 @@
 {
-    "name": "yasinkuyu/omnipay/nestpay",
+    "name": "yasinkuyu/omnipay-nestpay",
     "type": "library",
     "description": "NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library",
     "keywords": [
