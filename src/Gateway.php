@@ -21,20 +21,33 @@ class Gateway extends AbstractGateway
     public function getDefaultParameters()
     {
         return array(
-            'name' => '',
+            
+            'bank' => '',
+            'username' => '',
             'clientId' => '',
-            'password' => '',
+            'password' => ''
+            
         );
     }
 
+    public function getBank()
+    {
+        return $this->getParameter('bank');
+    }
+    
+    public function setBank($value)
+    {
+        return $this->setParameter('bank', $value);
+    }
+    
     public function getUserName()
     {
-        return $this->getParameter('name');
+        return $this->getParameter('username');
     }
 
     public function setUserName($value)
     {
-        return $this->setParameter('name', $value);
+        return $this->setParameter('username', $value);
     }
 
     public function getClientId()
@@ -55,16 +68,6 @@ class Gateway extends AbstractGateway
     public function setPassword($value)
     {
         return $this->setParameter('password', $value);
-    }
-
-    public function getBank()
-    {
-        return $this->getParameter('bank');
-    }
-    
-    public function setBank($value)
-    {
-        return $this->setParameter('bank', $value);
     }
     
     public function purchase(array $parameters = array())
