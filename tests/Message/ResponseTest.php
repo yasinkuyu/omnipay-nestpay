@@ -1,10 +1,15 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 use Mockery as m;
 use Omnipay\Tests\TestCase;
 
+/**
+ * NestPay Gateway ResponseTest
+ * 
+ * (c) Yasin Kuyu
+ * 2015, insya.com
+ * http://www.github.com/yasinkuyu/omnipay-nestpay
+ */
 class ResponseTest extends TestCase
 {
     /**

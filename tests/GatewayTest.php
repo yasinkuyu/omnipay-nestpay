@@ -1,10 +1,15 @@
-<?php
-
-namespace Omnipay\NestPay;
+<?php namespace Omnipay\NestPay;
 
 use Omnipay\Common\CreditCard;
 use Omnipay\Tests\GatewayTestCase;
 
+/**
+ * NestPay Gateway Test
+ * 
+ * (c) Yasin Kuyu
+ * 2015, insya.com
+ * http://www.github.com/yasinkuyu/omnipay-nestpay
+ */
 class GatewayTest extends GatewayTestCase
 {
     public function setUp()
@@ -18,17 +23,15 @@ class GatewayTest extends GatewayTestCase
             'clientId' => '700100000',
             'password' => 'ISBANK07',
             'amount' => '10.00',
+            'currency' => 'TL',
             'returnUrl' => 'http://sanalmagaza.org/return',
             'card' => new CreditCard(array(
                 'firstName' => 'Yasin',
                 'lastName' => 'Kuyu',
-                'number' => '4111111111111111',
+                'number' => '4508034508034509',
                 'expiryMonth' => '12',
-                'expiryYear' => '2016',
-                'cvv' => '123',
-                'issueNumber' => '5',
-                'startMonth' => '4',
-                'startYear' => '2013',
+                'expiryYear' => '16',
+                'cvv' => '000'
             )),
         );
     }

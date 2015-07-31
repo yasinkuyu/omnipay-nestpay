@@ -32,6 +32,16 @@ And run composer to update your dependencies:
 The following gateways are provided by this package:
 
 * NestPay
+    - İş Bankası 
+    - Akbank
+    - Finansbank 
+    - Denizbank
+    - Kuveytturk 
+    - Halkbank
+    - Anadolubank 
+    - ING Bank 
+    - Citibank 
+    - Cardplus
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.

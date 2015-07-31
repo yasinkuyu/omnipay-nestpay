@@ -1,12 +1,14 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 use SimpleXMLElement;
 use Omnipay\Common\Exception\InvalidResponseException;
 
 /**
  * NestPay Complete Purchase Request
+ * 
+ * (c) Yasin Kuyu
+ * 2015, insya.com
+ * http://www.github.com/yasinkuyu/omnipay-nestpay
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {

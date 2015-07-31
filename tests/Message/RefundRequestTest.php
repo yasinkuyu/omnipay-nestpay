@@ -1,9 +1,14 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 use Omnipay\Tests\TestCase;
 
+/**
+ * NestPay Gateway RefundRequestTest
+ * 
+ * (c) Yasin Kuyu
+ * 2015, insya.com
+ * http://www.github.com/yasinkuyu/omnipay-nestpay
+ */
 class RefundRequestTest extends TestCase
 {
     public function setUp()

@@ -6,8 +6,10 @@ use Omnipay\Common\AbstractGateway;
 
 /**
  * NestPay Gateway
- *
- * @link http://www.github.com/yasinkuyu/omnipay-nestpay
+ * 
+ * (c) Yasin Kuyu
+ * 2015, insya.com
+ * http://www.github.com/yasinkuyu/omnipay-nestpay
  */
 class Gateway extends AbstractGateway
 {
@@ -25,12 +27,12 @@ class Gateway extends AbstractGateway
         );
     }
 
-    public function getVendorName()
+    public function getUserName()
     {
         return $this->getParameter('name');
     }
 
-    public function setVendorName($value)
+    public function setUserName($value)
     {
         return $this->setParameter('name', $value);
     }
@@ -55,6 +57,16 @@ class Gateway extends AbstractGateway
         return $this->setParameter('password', $value);
     }
 
+    public function getBank()
+    {
+        return $this->getParameter('bank');
+    }
+    
+    public function setBank($value)
+    {
+        return $this->setParameter('bank', $value);
+    }
+    
     public function purchase(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\NestPay\Message\PurchaseRequest', $parameters);

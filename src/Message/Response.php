@@ -1,16 +1,16 @@
-<?php
+<?php namespace Omnipay\NestPay\Message;
 
-namespace Omnipay\NestPay\Message;
-
-use DOMDocument;
 use SimpleXMLElement;
-use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
 
 /**
  * NestPay Response
+ * 
+ * (c) Yasin Kuyu
+ * 2015, insya.com
+ * http://www.github.com/yasinkuyu/omnipay-nestpay
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
@@ -22,12 +22,12 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     public function isSuccessful()
     {
-        return (string) $this->xml->CC5Response->ProcReturnCode === '00';
+        return $this->xml->CC5Response->ProcReturnCode === '00';
     }
 
     public function isRedirect()
     {
-        return false;//3 === (int) $this->data->error_msg;
+        return 3 === (int) $this->data->error_msg;
     }
 
     public function getTransactionId()
