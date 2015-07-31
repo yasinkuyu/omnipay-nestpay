@@ -22,7 +22,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "omnipay/nestpay": "~2.0"
+        "yasinkuyu/omnipay-nestpay": "~2.0"
     }
 }
 ```
