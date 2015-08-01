@@ -46,7 +46,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-yasin": "2.1"
+            "dev-yasin": "2.0.x-dev"
         }
     }
 }
