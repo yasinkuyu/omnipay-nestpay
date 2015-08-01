@@ -67,6 +67,59 @@ repository.
 
 PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of the xUnit architecture for unit testing frameworks.
 
+## Sample App
+
+    <?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+    use Omnipay\Omnipay;
+
+    class PaymentTest extends CI_Controller {
+
+        public function index() {
+
+            $gateway = Omnipay::create('NestPay');
+
+            $gateway->setBank("denizbank");
+            $gateway->setUserName("DENIZTEST");
+            $gateway->setClientId("800100000");
+            $gateway->setPassword("DENIZTEST123");
+            $gateway->setTestMode(TRUE);
+
+            $formData = [
+                'number'        => '5406675406675403',
+                'expiryMonth'   => '12',
+                'expiryYear'    => '2015',
+                'cvv'           => '000',
+                'email'         => 'yasinkuyu@gmail.com',
+                'firstname'     => 'Yasin',
+                'lastname'      => 'Kuyu'
+            ];
+
+            $response = $gateway->purchase(
+            [
+                'installments'  => 0, 
+                'amount'        => 1.00,
+                'card'          => $formData
+            ]
+            )->send();
+
+            if ($response->isRedirect())
+                $response->redirect();
+
+            if ($response->isSuccessful()) {
+                echo $response->getMessage();
+            } else {
+                echo $response->getError();
+            }
+
+            // Debug
+            //var_dump($response);
+
+        }
+
+    }
+
+
 ## Support
 
 If you are having general issues with Omnipay, we suggest posting on
