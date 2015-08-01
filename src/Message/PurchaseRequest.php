@@ -16,7 +16,9 @@ class PurchaseRequest extends AbstractRequest {
 
     protected $endpoint = '';
     protected $endpoints = [
-        'test'          => 'https://entegrasyon.asseco-see.com.tr/fim/api',
+        'test'          => 'https://testvpos.asseco-see.com.tr/fim/api',
+        'asseco'        => 'https://entegrasyon.asseco-see.com.tr/fim/api',
+        
         'isbank'        => 'spos.isbank.com.tr',
         'akbank'        => 'www.sanalakpos.com',
         'finansbank'    => 'www.fbwebpos.com',
@@ -76,7 +78,7 @@ class PurchaseRequest extends AbstractRequest {
         $data['UserId'] = '';
         $data['Type'] = $this->getType();
         $data['Currency'] = $this->currencies["TRY"];
-        $data['Taksit'] = $this->getInstallment();
+        $data['Taksit'] = $this->getInstallments();
 
         $data['Total'] = $this->getAmount(); 
         $data['Number'] = $this->getCard()->getNumber();
@@ -156,12 +158,12 @@ class PurchaseRequest extends AbstractRequest {
         return $this->setParameter('password', $value);
     }
     
-    public function getInstallment() {
-        return $this->getParameter('installment');
+    public function getInstallments() {
+        return $this->getParameter('installments');
     }
 
-    public function setInstallment($value) {
-        return $this->setParameter('installment', $value);
+    public function setInstallments($value) {
+        return $this->setParameter('installments', $value);
     }
       
     public function getType() {
