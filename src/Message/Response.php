@@ -44,7 +44,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     }
 
     /**
-     * Get redirect
+     * Get is redirect
      *
      * @return bool
      */
@@ -74,7 +74,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
             return $this->data->response + " / "  + $this->data->host_msg;
         }
         return $this->data->CC5Response->error_msg;
-        
     }
 
     /**
