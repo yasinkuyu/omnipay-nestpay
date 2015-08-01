@@ -92,9 +92,9 @@ class PurchaseRequest extends AbstractRequest {
        
         return $data;
     }
-
+ 
     public function sendData($data) {
-        $document = new DOMDocument('1.0', 'ISO-8859-9');
+        $document = new DOMDocument('1.0', 'UTF-8');
 
         $root = $document->createElement('CC5Request');
 
