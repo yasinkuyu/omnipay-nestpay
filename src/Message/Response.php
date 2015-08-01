@@ -6,7 +6,6 @@ use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
-use SimpleXMLElement;
 
 /**
  * NestPay Response
@@ -27,7 +26,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     public function __construct(RequestInterface $request, $data) {
         $this->request = $request;
         try {
-            $this->data = new SimpleXMLElement($data);
+            $this->data = (array)simplexml_load_string($data);
         } catch (\Exception $ex) {
             throw new InvalidResponseException();
         }
@@ -39,7 +38,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      * @return bool
      */
     public function isSuccessful() {
-        return (string) $this->data->CC5Response->ProcReturnCode === '00' || $this->data->CC5Response->Response === 'Approved';
+        return (string) $this->data["ProcReturnCode"] === '00' || $this->data["Response"] === 'Approved';
     }
 
     /**
@@ -57,7 +56,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      * @return string
      */
     public function getTransactionReference() {
-        return (string) $this->data->transid;
+        return (string) $this->data["TransId"];
     }
 
     /**
@@ -67,9 +66,9 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      */
     public function getMessage() {
         if ($this->isSuccessful()) {
-            return $this->data->host_msg;
+            return $this->data["Response"];
         }
-        return $this->data->CC5Response->error_msg;
+        return $this->data["ErrMsg"];
     }
 
     /**
@@ -80,7 +79,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     public function getRedirectUrl() {
         if ($this->isRedirect()) {
             $data = array(
-                'TransId' => $this->data->TransId
+                'TransId' => $this->data["TransId"]
             );
             return $this->getRequest()->getEndpoint() . '/test/index?' . http_build_query($data);
         }
@@ -90,7 +89,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
         if ($this->isSuccessful()) {
             return [];
         }
-        return $this->data->CC5Response->error_msg;
+        return $this->data["ErrMsg"];
     }
 
     public function getRedirectMethod() {
