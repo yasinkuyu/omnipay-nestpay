@@ -31,7 +31,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         } catch (\Exception $e) {
             throw new InvalidResponseException();
         }
-        
     }
 
      /**
@@ -77,12 +76,10 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     public function getRedirectUrl()
     {
         if ($this->isRedirect()) {
-//            $data = array(
-//                'merchantId' => $this->getRequest()->getMerchantId(),
-//                'transactionId' => $this->getTransactionReference(),
-//            );
-            //return $this->getRequest()->getEndpoint().'/Terminal/Default.aspx?'.http_build_query($data);
-            return "http://local.instore/test/index?";//.http_build_query($data);
+            $data = array(
+                'TransId' => $this->data->TransId
+            );
+            return $this->getRequest()->getEndpoint().'/test/index?'.http_build_query($data);
         }
     }
     
