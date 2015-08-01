@@ -70,9 +70,18 @@ class Response extends AbstractResponse implements RedirectResponseInterface
      */
     public function getMessage()
     {
-        return $this->data->response + " / "  + $this->data->host_msg;
+        if ($this->isSuccessful()) {
+            return $this->data->response + " / "  + $this->data->host_msg;
+        }
+        return $this->data->CC5Response->error_msg;
+        
     }
 
+    /**
+     * Get Redirect url
+     *
+     * @return string
+     */
     public function getRedirectUrl()
     {
         if ($this->isRedirect()) {
@@ -82,22 +91,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
             return $this->getRequest()->getEndpoint().'/test/index?'.http_build_query($data);
         }
     }
+     
     
-    public function getError()
-    {
-        if ($this->isSuccessful()) {
-            return [];
-        }
-        return $this->data->CC5Response->error_msg;
-    }
-    
-    public function getRedirectMethod()
-    {
-        return 'POST';
-    }
-
-    public function getRedirectData()
-    {
-        return null;
-    }   
 }
