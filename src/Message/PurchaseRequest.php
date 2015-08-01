@@ -16,7 +16,7 @@ class PurchaseRequest extends AbstractRequest {
 
     protected $endpoint = '';
     protected $endpoints = [
-        'test'          => 'testsanalpos.est.com.tr',
+        'test'          => 'https://entegrasyon.asseco-see.com.tr/fim/api',
         'isbank'        => 'spos.isbank.com.tr',
         'akbank'        => 'www.sanalakpos.com',
         'finansbank'    => 'www.fbwebpos.com',
@@ -39,9 +39,14 @@ class PurchaseRequest extends AbstractRequest {
     ];
     
     protected $currencies = [
-        "TRY"        => 949,
-        "USD"        => 840,
-        "EUR"        => 978,
+        'TRY' => 949,
+        'YTL' => 949,
+        'TRL' => 949,
+        'TL'  => 949,
+        'USD' => 840,
+        'EUR' => 978,
+        'GBP' => 826,
+        'JPY' => 392
     ];
     
     public function getData() {
@@ -55,7 +60,7 @@ class PurchaseRequest extends AbstractRequest {
             $this->endpoint = $this->endpoints[$gateway];
         }
         
-        $this->endpoint = $this->getTestMode() == TRUE ? $protocol . $this->endpoints["test"] . $this->url["purchase"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
+        $this->endpoint = $this->getTestMode() == TRUE ?  $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
 
         $this->validate('amount', 'card');
         $this->getCard()->validate();
