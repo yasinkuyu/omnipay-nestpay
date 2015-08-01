@@ -20,17 +20,28 @@ class PurchaseRequest extends AbstractRequest {
         'isbank'        => 'spos.isbank.com.tr',
         'akbank'        => 'www.sanalakpos.com',
         'finansbank'    => 'www.fbwebpos.com',
+        'denizbank'     => 'denizbank.est.com.tr',
+        'kuveytturk'    => 'kuveytturk.est.com.tr',
         'halkbank'      => 'sanalpos.halkbank.com.tr',
-        'anadolubank'   => 'anadolusanalpos.est.com.tr'
+        'anadolubank'   => 'anadolusanalpos.est.com.tr',
+        'ingbank'       => 'ingbank.est.com.tr',
+        'citibank'      => 'citibank.est.com.tr',
+        'cardplus'      => 'cardplus.est.com.tr'
     ];
     
     protected $url = [
-        "3dUrl"         => "/servlet/est3Dgate",
-        "listUrl"       => "/servlet/listapproved",
-        "detailUrl"     => "/servlet/cc5ApiServer",
-        "cancelUrl"     => "/servlet/cc5ApiServer",
-        "returnUrl"     => "/servlet/cc5ApiServer",
-        "purchaseUrl"   => "/servlet/cc5ApiServer"
+        "3d"         => "/servlet/est3Dgate",
+        "list"       => "/servlet/listapproved",
+        "detail"     => "/servlet/cc5ApiServer",
+        "cancel"     => "/servlet/cc5ApiServer",
+        "return"     => "/servlet/cc5ApiServer",
+        "purchase"   => "/servlet/cc5ApiServer"
+    ];
+    
+    protected $currencies = [
+        "TRY"        => 949,
+        "USD"        => 840,
+        "EUR"        => 978,
     ];
     
     public function getData() {
@@ -43,8 +54,8 @@ class PurchaseRequest extends AbstractRequest {
         } else {
             $this->endpoint = $this->endpoints[$gateway];
         }
-        $this->endpoint = $this->getTestMode() == TRUE ? $protocol . $this->endpoints["test"] . $this->url["purchaseUrl"] : $protocol . $this->endpoints[$gateway] . $this->url["purchaseUrl"];
-
+        
+        $this->endpoint = $this->getTestMode() == TRUE ? $protocol . $this->endpoints["test"] . $this->url["purchase"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
 
         $this->validate('amount', 'card');
         $this->getCard()->validate();
@@ -59,7 +70,7 @@ class PurchaseRequest extends AbstractRequest {
         $data['TransId'] = '';
         $data['UserId'] = '';
         $data['Type'] = $this->getType();
-        $data['Currency'] = 949; // TL
+        $data['Currency'] = $this->currencies["TRY"];
         $data['Taksit'] = $this->getInstallment();
 
         $data['Total'] = $this->getAmount(); 
