@@ -2,8 +2,9 @@
 
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
+use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Common\Exception\InvalidResponseException;
 
 /**
  * NestPay Response
@@ -14,50 +15,92 @@ use Omnipay\Common\Message\RequestInterface;
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
+   
+    /**
+     * Constructor
+     *
+     * @param  RequestInterface         $request
+     * @param  string                   $data
+     * @throws InvalidResponseException
+     */
     public function __construct(RequestInterface $request, $data)
     {
         $this->request = $request;
-        $this->data = SimpleXMLElement($data);
+        try {
+            $this->data = new \SimpleXMLElement($data);
+        } catch (\Exception $e) {
+            throw new InvalidResponseException();
+        }
+        
     }
 
+     /**
+     * Whether or not response is successful
+     *
+     * @return bool
+     */
     public function isSuccessful()
     {
-        return $this->xml->CC5Response->ProcReturnCode === '00';
+        return (string) $this->data->CC5Response->ProcReturnCode === '00';
     }
 
+    /**
+     * Get redirect
+     *
+     * @return bool
+     */
     public function isRedirect()
     {
-        return 3 === (int) $this->data->error_msg;
+        return 3 === (int) $this->data->ErrMsg;
     }
 
-    public function getTransactionId()
+    /**
+     * Get transaction reference
+     *
+     * @return string
+     */
+    public function getTransactionReference()
     {
-        return $this->data->transid;
+        return (string) $this->data->transid;
     }
 
+    /**
+     * Get message
+     *
+     * @return string
+     */
     public function getMessage()
     {
         return $this->data->response + " / "  + $this->data->host_msg;
     }
 
+    public function getRedirectUrl()
+    {
+        if ($this->isRedirect()) {
+//            $data = array(
+//                'merchantId' => $this->getRequest()->getMerchantId(),
+//                'transactionId' => $this->getTransactionReference(),
+//            );
+            //return $this->getRequest()->getEndpoint().'/Terminal/Default.aspx?'.http_build_query($data);
+            return "http://local.instore/test/index?";//.http_build_query($data);
+        }
+    }
+    
     public function getError()
     {
-        return $this->data->return_code;
-    }
-
-    public function getErrorMsg()
-    {
-        return $this->data->error_msg;
-    }
-
-    public function getRequest()
-    {
-        return $this->request;
+        if ($this->isSuccessful()) {
+            return [];
+        }
+        return $this->data->CC5Response->error_msg;
     }
     
     public function getRedirectMethod()
     {
         return 'POST';
     }
-   
+
+    public function getRedirectData()
+    {
+        return null;
+    }   
 }

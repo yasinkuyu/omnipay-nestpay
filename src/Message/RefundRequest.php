@@ -1,8 +1,5 @@
 <?php namespace Omnipay\NestPay\Message;
 
-use DOMDocument;
-use SimpleXMLElement;
-
 /**
  * NestPay Purchase Request
  * 
@@ -23,7 +20,7 @@ class RefundRequest extends PurchaseRequest
         $data['Password'] = $this->getPassword();
         $data['Type'] =  'Credit';
         $data['Total'] = $this->getAmountInteger();
-        $data['OrderId'] = $this->getTransactionId();
+        $data['OrderId'] = $this->getTransactionReference();
         $data['Currency'] = $this->getCurrencyNumeric();
 
         return $data;

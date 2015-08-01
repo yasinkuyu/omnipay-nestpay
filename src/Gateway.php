@@ -22,14 +22,36 @@ class Gateway extends AbstractGateway
     {
         return array(
             
-            'bank' => '',
-            'username' => '',
-            'clientId' => '',
-            'password' => ''
+            'bank'          => '',
+            'username'      => '',
+            'clientId'      => '',
+            'password'      => '',
+            'installment'   => '0',
+            'type'          => 'PreAuth'
             
         );
     }
 
+    public function purchase(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\PurchaseRequest', $parameters);
+    }
+
+    public function referencedPurchase(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\ReferencedPurchaseRequest', $parameters);
+    }
+
+    public function completePurchase(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\CompletePurchaseRequest', $parameters);
+    }
+
+    public function refund(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\RefundRequest', $parameters);
+    }
+    
     public function getBank()
     {
         return $this->getParameter('bank');
@@ -70,23 +92,19 @@ class Gateway extends AbstractGateway
         return $this->setParameter('password', $value);
     }
     
-    public function purchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\NestPay\Message\PurchaseRequest', $parameters);
+    public function getInstallment() {
+        return $this->getParameter('installment');
     }
 
-    public function referencedPurchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\NestPay\Message\ReferencedPurchaseRequest', $parameters);
+    public function setInstallment($value) {
+        return $this->setParameter('installment', $value);
+    }
+       
+    public function getType() {
+        return $this->getParameter('type');
     }
 
-    public function completePurchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\NestPay\Message\CompletePurchaseRequest', $parameters);
-    }
-
-    public function refund(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\NestPay\Message\RefundRequest', $parameters);
+    public function setType($value) {
+        return $this->setParameter('type', $value);
     }
 }

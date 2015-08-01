@@ -1,8 +1,5 @@
 <?php namespace Omnipay\NestPay\Message;
 
-use SimpleXMLElement;
-use Omnipay\Common\Exception\InvalidResponseException;
-
 /**
  * NestPay Complete Purchase Request
  * 
@@ -20,7 +17,7 @@ class CompletePurchaseRequest extends PurchaseRequest
         $data['ClientId'] = $this->getClientId();
         $data['Password'] = $this->getPassword();
         $data['Type'] =  'PostAuth';
-        $data['OrderId'] = $this->getTransactionId();
+        $data['OrderId'] = $this->transactionReference();
         
         return $data;
     }
