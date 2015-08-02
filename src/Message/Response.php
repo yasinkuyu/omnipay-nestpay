@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
@@ -20,7 +18,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      * Constructor
      *
      * @param  RequestInterface         $request
-     * @param  string                   $data
+     * @param  string                   $data / response data
      * @throws InvalidResponseException
      */
     public function __construct(RequestInterface $request, $data) {
@@ -99,5 +97,5 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     public function getRedirectData() {
         return null;
     }
-
+    
 }
