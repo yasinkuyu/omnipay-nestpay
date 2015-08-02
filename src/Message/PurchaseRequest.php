@@ -16,111 +16,138 @@ class PurchaseRequest extends AbstractRequest {
 
     protected $endpoint = '';
     protected $endpoints = [
-        'test'          => 'https://testvpos.asseco-see.com.tr/fim/api',
-        'asseco'        => 'https://entegrasyon.asseco-see.com.tr/fim/api',
-        
-        'isbank'        => 'spos.isbank.com.tr',
-        'akbank'        => 'www.sanalakpos.com',
-        'finansbank'    => 'www.fbwebpos.com',
-        'denizbank'     => 'denizbank.est.com.tr',
-        'kuveytturk'    => 'kuveytturk.est.com.tr',
-        'halkbank'      => 'sanalpos.halkbank.com.tr',
-        'anadolubank'   => 'anadolusanalpos.est.com.tr',
-        'ingbank'       => 'ingbank.est.com.tr',
-        'citibank'      => 'citibank.est.com.tr',
-        'cardplus'      => 'cardplus.est.com.tr'
+        'test' => 'https://testvpos.asseco-see.com.tr/fim/api',
+        'asseco' => 'https://entegrasyon.asseco-see.com.tr/fim/api',
+        'isbank' => 'spos.isbank.com.tr',
+        'akbank' => 'www.sanalakpos.com',
+        'finansbank' => 'www.fbwebpos.com',
+        'denizbank' => 'denizbank.est.com.tr',
+        'kuveytturk' => 'kuveytturk.est.com.tr',
+        'halkbank' => 'sanalpos.halkbank.com.tr',
+        'anadolubank' => 'anadolusanalpos.est.com.tr',
+        'ingbank' => 'ingbank.est.com.tr',
+        'citibank' => 'citibank.est.com.tr',
+        'cardplus' => 'cardplus.est.com.tr'
     ];
-    
     protected $url = [
-        "3d"         => "/servlet/est3Dgate",
-        "list"       => "/servlet/listapproved",
-        "detail"     => "/servlet/cc5ApiServer",
-        "cancel"     => "/servlet/cc5ApiServer",
-        "return"     => "/servlet/cc5ApiServer",
-        "purchase"   => "/servlet/cc5ApiServer"
+        "3d" => "/servlet/est3Dgate",
+        "list" => "/servlet/listapproved",
+        "detail" => "/servlet/cc5ApiServer",
+        "cancel" => "/servlet/cc5ApiServer",
+        "return" => "/servlet/cc5ApiServer",
+        "purchase" => "/servlet/cc5ApiServer"
     ];
-    
     protected $currencies = [
         'TRY' => 949,
         'YTL' => 949,
         'TRL' => 949,
-        'TL'  => 949,
+        'TL' => 949,
         'USD' => 840,
         'EUR' => 978,
         'GBP' => 826,
         'JPY' => 392
     ];
-    
+
     public function getData() {
-      
+
         $gateway = $this->getBank();
         $protocol = 'http://';
+        $test = $this->getTestMode();
 
         if (!array_key_exists($gateway, $this->endpoints)) {
             throw new \Exception('Invalid Gateway');
         } else {
             $this->endpoint = $this->endpoints[$gateway];
         }
-        
-        $this->endpoint = $this->getTestMode() == TRUE ?  $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
 
-        $this->validate('amount', 'card');
+        $this->endpoint = $test == TRUE ? $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
+
+        $this->validate('amount', 'card', 'currency');
         $this->getCard()->validate();
+        $currency = $this->getCurrency();
 
         $data['Name'] = $this->getUserName();
         $data['ClientId'] = $this->getClientId();
         $data['Password'] = $this->getPassword();
-        $data['Mode'] = 'P';
+        $data['Mode'] = $test ? 'T' : 'P';
+
         $data['Email'] = $this->getCard()->getEmail();
         $data['OrderId'] = '';
         $data['GroupId'] = '';
         $data['TransId'] = '';
         $data['UserId'] = '';
         $data['Type'] = $this->getType();
-        $data['Currency'] = $this->currencies["TRY"];
+        $data['Currency'] = $this->currencies[$currency];
         $data['Taksit'] = $this->getInstallments();
 
-        $data['Total'] = $this->getAmount(); 
+        $data['Total'] = $this->getAmount();
         $data['Number'] = $this->getCard()->getNumber();
-        $data['Expires'] = $this->getCard()->getExpiryDate('m') . $this->getCard()->getExpiryDate('y');
+        $data['Expires'] = $this->getCard()->getExpiryDate('my');
         $data["Cvv2Val"] = $this->getCard()->getCvv();
-        $data["IPAddress"] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+        $data["IPAddress"] = $this->getClientIp(); //isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+        
+        // Todo billing and shipping
+        $dataBill = [
+            "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
+            "Street1" => $this->getCard()->getBillingAddress1(),
+            "Street2" => $this->getCard()->getBillingAddress2(),
+            "Street3" => "",
+            "City" => $this->getCard()->getBillingCity(),
+            "StateProv" => $this->getCard()->getBillingState(),
+            "PostalCode" => $this->getCard()->getBillingPostcode(),
+            "Country" => $this->getCard()->getBillingCountry(),
+            "Company" => $this->getCard()->getCompany(),
+            "TelVoice" => $this->getCard()->getBillingPhone()
+        ];
 
-        $data["BillTo"] =  '';
-        $data["ShipTo"] =  '';
-        $data["Extra"] =  '';
-       
+        $dataShip = [
+            "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
+            "Street1" => $this->getCard()->getShippingAddress1(),
+            "Street2" => $this->getCard()->getShippingAddress2(),
+            "Street3" => "",
+            "City" => $this->getCard()->getShippingCity(),
+            "StateProv" => $this->getCard()->getShippingState(),
+            "PostalCode" => $this->getCard()->getShippingPostcode(),
+            "Country" => $this->getCard()->getShippingCountry(),
+            "Company" => $this->getCard()->getCompany(),
+            "TelVoice" => $this->getCard()->getShippingPhone()
+        ];
+
+        $data["ShipTo"] = "";
+        $data["BillTo"] = "";
+        $data["Extra"] = '';
+
         return $data;
     }
- 
-    public function sendData($data) {
-        $document = new DOMDocument('1.0', 'UTF-8');
 
+    public function sendData($data) {
+
+        $document = new DOMDocument('1.0', 'UTF-8');
         $root = $document->createElement('CC5Request');
 
-        // each array element 
+        // Each array element 
         foreach ($data as $id => $value) {
             $root->appendChild($document->createElement($id, $value));
         }
-        
+
         $document->appendChild($root);
 
-        //post to NestPay
+        // Post to NestPay
         $headers = array(
-            'Content-Type'   => 'application/x-www-form-urlencoded'
+            'Content-Type' => 'application/x-www-form-urlencoded'
         );
-        
-         // register the payment
+
+        // Register the payment
         $this->httpClient->setConfig(array(
             'curl.options' => array(
                 'CURLOPT_SSL_VERIFYHOST' => 2,
-                'CURLOPT_SSLVERSION'     => 0,
+                'CURLOPT_SSLVERSION' => 0,
                 'CURLOPT_SSL_VERIFYPEER' => 0,
                 'CURLOPT_RETURNTRANSFER' => 1,
-                'CURLOPT_POST'           => 1
+                'CURLOPT_POST' => 1
             )
         ));
-        
+
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
@@ -157,7 +184,7 @@ class PurchaseRequest extends AbstractRequest {
     public function setPassword($value) {
         return $this->setParameter('password', $value);
     }
-    
+
     public function getInstallments() {
         return $this->getParameter('installments');
     }
@@ -165,7 +192,7 @@ class PurchaseRequest extends AbstractRequest {
     public function setInstallments($value) {
         return $this->setParameter('installments', $value);
     }
-      
+
     public function getType() {
         return $this->getParameter('type');
     }
@@ -173,4 +200,5 @@ class PurchaseRequest extends AbstractRequest {
     public function setType($value) {
         return $this->setParameter('type', $value);
     }
+
 }
