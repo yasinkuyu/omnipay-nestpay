@@ -1,7 +1,5 @@
 <?php namespace Omnipay\NestPay\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
-
 /**
  * NestPay Authorize Request
  * 
