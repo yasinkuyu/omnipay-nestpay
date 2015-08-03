@@ -171,8 +171,7 @@ class PurchaseRequest extends AbstractRequest {
                 'CURLOPT_POST' => 1
             )
         ));
-        echo $document->saveXML();
-        die();
+         
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
