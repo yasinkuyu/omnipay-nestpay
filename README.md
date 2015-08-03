@@ -1,6 +1,6 @@
 # Omnipay: NestPay
 
-**NestPay (EST) (Ä°ÅŸ BankasÄ±, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library**
+**NestPay (EST) (Ýþ Bankasý, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library**
 
 [![Latest Stable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/stable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
 [![Total Downloads](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/downloads)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
@@ -11,7 +11,7 @@
 processing library for PHP 5.3+. This package implements NestPay (Turkey Payment Gateways) support for Omnipay.
 
 
-NestPay (Eski adÄ±yla EST) altyapÄ±sÄ±nÄ± kullanan TÃ¼rkiye bankalarÄ± iÃ§in Omnipay kÃ¼tÃ¼phanesi. Desteklenmesi hedeflenen bankalar; Ä°ÅŸ BankasÄ±, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus.
+NestPay (Eski adýyla EST) altyapýsýný kullanan Türkiye bankarý için Omnipay kütüphanesi. Desteklenmesi hedeflenen bankalar; Ýþ Bankasý, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus.
 
 
 ## Installation
@@ -37,7 +37,7 @@ And run composer to update your dependencies:
 The following gateways are provided by this package:
 
 * NestPay
-    - Ä°ÅŸ BankasÄ± 
+    - Ýþ Bankasý 
     - Akbank
     - Finansbank 
     - Denizbank
@@ -51,12 +51,12 @@ The following gateways are provided by this package:
 Gateway Methods
 
 * authorize($options) - authorize an amount on the customer's card
-* completeAuthorize($options) - handle return from off-site gateways after authorization
 * capture($options) - capture an amount you have previously authorized
 * purchase($options) - authorize and immediately capture an amount on the customer's card
-* completePurchase($options) - handle return from off-site gateways after purchase
 * refund($options) - refund an already processed transaction
 * void($options) - generally can only be called up to 24 hours after submitting a transaction
+* credit($options) - money points processed transaction
+* settle($options) - settlement query processed transaction
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
