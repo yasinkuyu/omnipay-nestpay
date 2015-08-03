@@ -55,7 +55,7 @@ class PurchaseRequest extends AbstractRequest {
         $currency = $this->getCurrency();
 
         $data['Email'] = $this->getCard()->getEmail();
-        $data['OrderId'] = '';
+        $data['OrderId'] = $this->getOrderId();
         $data['GroupId'] = '';
         $data['TransId'] = '';
         $data['UserId'] = '';
@@ -67,9 +67,9 @@ class PurchaseRequest extends AbstractRequest {
         $data['Number'] = $this->getCard()->getNumber();
         $data['Expires'] = $this->getCard()->getExpiryDate('my');
         $data["Cvv2Val"] = $this->getCard()->getCvv();
-        $data["IPAddress"] = $this->getClientIp(); //isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+        $data["IPAddress"] = $this->getClientIp(); 
         
-        // Todo billing and shipping
+        // Todo : billing and shipping parameters
         $dataBill = [
             "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
             "Street1" => $this->getCard()->getBillingAddress1(),
@@ -112,6 +112,7 @@ class PurchaseRequest extends AbstractRequest {
         $data['Mode'] = $this->getTestMode() ? 'T' : 'P';
 
         // Get geteway
+        // ex: isbank
         $gateway = $this->getBank();
         
         // Todo: http protocol
@@ -136,7 +137,7 @@ class PurchaseRequest extends AbstractRequest {
         foreach ($data as $id => $value) {
             $root->appendChild($document->createElement($id, $value));
         }
-
+        
         $document->appendChild($root);
 
         // Post to NestPay
@@ -155,7 +156,6 @@ class PurchaseRequest extends AbstractRequest {
             )
         ));
         
-        echo $document->saveXML(); die();
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
