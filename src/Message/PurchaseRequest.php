@@ -25,6 +25,7 @@ class PurchaseRequest extends AbstractRequest {
         'kuveytturk' => 'kuveytturk.est.com.tr',
         'halkbank' => 'sanalpos.halkbank.com.tr',
         'anadolubank' => 'anadolusanalpos.est.com.tr',
+        'hsbc' => 'vpos.advantage.com.tr',
         // Todo
         'ingbank' => 'ingbank.est.com.tr',
         'citibank' => 'citibank.est.com.tr',
@@ -32,6 +33,7 @@ class PurchaseRequest extends AbstractRequest {
     ];
     protected $url = [
         "3d" => "/servlet/est3Dgate",
+        "3dhsbc" => "/servlet/hsbc3Dgate",
         "list" => "/servlet/listapproved",
         "detail" => "/servlet/cc5ApiServer",
         "cancel" => "/servlet/cc5ApiServer",
@@ -88,9 +90,6 @@ class PurchaseRequest extends AbstractRequest {
         // Todo: http protocol
         $protocol = 'http://';
 
-        // Test mode
-        $test = $this->getTestMode();
-
         if (!array_key_exists($gateway, $this->endpoints)) {
             throw new \Exception('Invalid Gateway');
         } else {
@@ -98,7 +97,7 @@ class PurchaseRequest extends AbstractRequest {
         }
 
         // Build api post url
-        $this->endpoint = $test == TRUE ? $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
+        $this->endpoint = $this->getTestMode() == TRUE ? $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
 
         $document = new DOMDocument('1.0', 'UTF-8');
         $root = $document->createElement('CC5Request');
