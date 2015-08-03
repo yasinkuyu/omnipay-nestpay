@@ -66,7 +66,6 @@ repository.
 PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of the xUnit architecture for unit testing frameworks.
 
 ## Sample App
-
         <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
         use Omnipay\Omnipay;
@@ -153,6 +152,13 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
                 [
                     'amount'        => 1.00,
                     'card'          => $options
+                ]
+                )->send();
+
+                $response = $gateway->settle(
+                [
+                    'settlement'   => true,
+                    'card'         => $options
                 ]
                 )->send();
 
