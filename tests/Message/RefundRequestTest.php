@@ -3,7 +3,7 @@
 use Omnipay\Tests\TestCase;
 
 /**
- * NestPay Gateway RefundRequestTest
+ * NestPay Gateway Refund RequestTest
  * 
  * (c) Yasin Kuyu
  * 2015, insya.com
@@ -18,9 +18,9 @@ class RefundRequestTest extends TestCase
         $this->request = new RefundRequest($this->getHttpClient(), $this->getHttpRequest());
         $this->request->initialize(
             array(
-                'amount' => '12.00',
-                'transactionReference' => '0987654345678900987654',
-                'currency' => 'GBP',
+                'amount' => '11.00',
+                'orderId' => 'ORDER-365123',
+                'currency' => 'TRY',
                 'testMode' => true,
             )
         );
@@ -33,10 +33,10 @@ class RefundRequestTest extends TestCase
         /*
          * See https://bugs.php.net/bug.php?id=29500 for why this is cast to string
          */
-        $this->assertSame('REFUND', (string)$data['Type']);
+        $this->assertSame('Credit', (string)$data['Type']);
         $this->assertSame('1200', (string)$data['Amount']);
-        $this->assertSame('826', (string)$data['Currency']);
-        $this->assertSame('0987654345678900987654', (string)$data['CrossReference']);
+        $this->assertSame('TRY', (string)$data['Currency']);
+        $this->assertSame('ORDER-365123', (string)$data['orderId']);
     }
 
 }

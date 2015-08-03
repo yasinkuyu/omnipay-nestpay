@@ -47,18 +47,17 @@ class ResponseTest extends TestCase
         $httpResponse = $this->getMockHttpResponse('PurchaseRedirect.txt');
 
         $request = m::mock('\Omnipay\Common\Message\AbstractRequest');
-        $request->shouldReceive('getReturnUrl')->once()->andReturn('http://store.example.com/');
+        $request->shouldReceive('getReturnUrl')->once()->andReturn('http://sanalmagaza.org/');
 
         $response = new Response($request, $httpResponse->getBody());
 
         $this->assertTrue($response->isRedirect());
         $this->assertSame('POST', $response->getRedirectMethod());
-        $this->assertSame('http://some.redirect.com/', $response->getRedirectUrl());
+        $this->assertSame('http://sanalmagaza.org/', $response->getRedirectUrl());
 
         $expectedData = array(
-            'PaReq' => 'Some PaREQ',
-            'TermUrl' => 'http://store.example.com/',
-            'MD' => '130215141054377801316798',
+            'ReturnUrl' => 'http://sanalmagaza.org/',
+            'ReferanceId' => '130215141054377801316798'
         );
         $this->assertEquals($expectedData, $response->getRedirectData());
     }
