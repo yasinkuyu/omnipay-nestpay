@@ -50,15 +50,13 @@ The following gateways are provided by this package:
 
 Gateway Methods
 
-    The main methods implemented by gateways are:
-
-    authorize($options) - authorize an amount on the customer's card
-    completeAuthorize($options) - handle return from off-site gateways after authorization
-    capture($options) - capture an amount you have previously authorized
-    purchase($options) - authorize and immediately capture an amount on the customer's card
-    completePurchase($options) - handle return from off-site gateways after purchase
-    refund($options) - refund an already processed transaction
-    void($options) - generally can only be called up to 24 hours after submitting a transaction
+* authorize($options) - authorize an amount on the customer's card
+* completeAuthorize($options) - handle return from off-site gateways after authorization
+* capture($options) - capture an amount you have previously authorized
+* purchase($options) - authorize and immediately capture an amount on the customer's card
+* completePurchase($options) - handle return from off-site gateways after purchase
+* refund($options) - refund an already processed transaction
+* void($options) - generally can only be called up to 24 hours after submitting a transaction
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
@@ -69,109 +67,109 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
 ## Sample App
 
-    <?php defined('BASEPATH') OR exit('No direct script access allowed');
+        <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-    use Omnipay\Omnipay;
+        use Omnipay\Omnipay;
 
-    class PaymentTest extends CI_Controller {
+        class PaymentTest extends CI_Controller {
 
-        public function index() {
+            public function index() {
 
-            $gateway = Omnipay::create('NestPay');
+                $gateway = Omnipay::create('NestPay');
 
-            $gateway->setBank("denizbank");
-            $gateway->setUserName("DENIZTEST");
-            $gateway->setClientId("800100000");
-            $gateway->setPassword("DENIZTEST123");
-            $gateway->setTestMode(TRUE);
+                $gateway->setBank("denizbank");
+                $gateway->setUserName("DENIZTEST");
+                $gateway->setClientId("800100000");
+                $gateway->setPassword("DENIZTEST123");
+                $gateway->setTestMode(TRUE);
 
-            $options = [
-                'number'        => '5406675406675403',
-                'expiryMonth'   => '12',
-                'expiryYear'    => '2015',
-                'cvv'           => '000',
-                'email'         => 'yasinkuyu@gmail.com',
-                'firstname'     => 'Yasin',
-                'lastname'      => 'Kuyu'
-            ];
+                $options = [
+                    'number'        => '5406675406675403',
+                    'expiryMonth'   => '12',
+                    'expiryYear'    => '2015',
+                    'cvv'           => '000',
+                    'email'         => 'yasinkuyu@gmail.com',
+                    'firstname'     => 'Yasin',
+                    'lastname'      => 'Kuyu'
+                ];
 
-            $response = $gateway->purchase(
-            [
-                'installments'  => '', // Taksit
-                'amount'        => 1.00,
-                'type'          => 'Auth',
-                'orderid'       => 'ORDER-365123',
-                'card'          => $options
-            ]
-            )->send();
+                $response = $gateway->purchase(
+                [
+                    //'installments'  => '', # Taksit
+                    //'moneypoints'   => 1.00, // Set money points (Maxi puan gir)
+                    'amount'        => 12.00,
+                    'type'          => 'Auth',
+                    'orderid'       => 'ORDER-365123',
+                    'card'          => $options
+                ]
+                )->send();
 
-            $response = $gateway->authorize(
-            [
-                'type'          => 'PostAuth',
-                'orderid'       => 'ORDER-365123',
-                'card'          => $options
-            ]
-            )->send();
+                $response = $gateway->authorize(
+                [
+                    'type'          => 'PostAuth',
+                    'orderid'       => 'ORDER-365123',
+                    'card'          => $options
+                ]
+                )->send();
 
-            $response = $gateway->capture(
-            [
-                'orderid'       => 'ORDER-365123',
-                'amount'        => 1.00,
-                'currency'      => 'TRY',
-                'card'          => $options
-            ]
-            )->send();
+                $response = $gateway->capture(
+                [
+                    'orderid'       => 'ORDER-365123',
+                    'amount'        => 1.00,
+                    'currency'      => 'TRY',
+                    'card'          => $options
+                ]
+                )->send();
 
 
-            $response = $gateway->refund(
-            [
-                'orderid'       => 'ORDER-365123',
-                'amount'        => 1.00,
-                'currency'      => 'TRY',
-                'card'          => $options
-            ]
-            )->send();
+                $response = $gateway->refund(
+                [
+                    'orderid'       => 'ORDER-365123',
+                    'amount'        => 1.00,
+                    'currency'      => 'TRY',
+                    'card'          => $options
+                ]
+                )->send();
 
-            $response = $gateway->credit(
-            [
-                'orderid'       => 'ORDER-365123',
-                'amount'        => 1.00,
-                'currency'      => 'TRY', // Optional (default parameter TRY)
-                'card'          => $options
-            ]
-            )->send();
+                $response = $gateway->credit(
+                [
+                    'orderid'       => 'ORDER-365123',
+                    'amount'        => 1.00,
+                    'currency'      => 'TRY', // Optional (default parameter TRY)
+                    'card'          => $options
+                ]
+                )->send();
 
-            $response = $gateway->void(
-            [
-                'orderid'       => 'ORDER-365123',
-                'amount'        => 1.00,
-                'currency'      => 'TRY',
-                'card'          => $options
-            ]
-            )->send();
+                $response = $gateway->void(
+                [
+                    'orderid'       => 'ORDER-365123',
+                    'amount'        => 1.00,
+                    'currency'      => 'TRY',
+                    'card'          => $options
+                ]
+                )->send();
 
-              $response = $gateway->credit(
-            [
-                'amount'        => 1.00,
-                'card'          => $options
-            ]
-            )->send();
+                  $response = $gateway->credit(
+                [
+                    'amount'        => 1.00,
+                    'card'          => $options
+                ]
+                )->send();
 
-            if ($response->isSuccessful()) {
-                echo $response->getMessage();
-            } else {
-                echo $response->getError();
+                if ($response->isSuccessful()) {
+                    echo $response->getMessage();
+                } else {
+                    echo $response->getError();
+                }
+
+                //echo $response->getTransactionReference();
+
+                // Debug
+                //var_dump($response);
+
             }
 
-            //echo $response->getTransactionReference();
-
-            // Debug
-            //var_dump($response);
-
         }
-
-    }
-
 
 
 ## Support
