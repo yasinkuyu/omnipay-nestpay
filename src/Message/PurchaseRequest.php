@@ -64,7 +64,7 @@ class PurchaseRequest extends AbstractRequest {
         $data['UserId'] = '';
         $data['Type'] = $this->getType();
         $data['Currency'] = $this->currencies[$currency];
-        $data['Taksit'] = $this->getInstallments();
+        $data['Taksit'] = $this->getInstallment();
 
         $data['Total'] = $this->getAmount();
         $data['Number'] = $this->getCard()->getNumber();
@@ -221,12 +221,12 @@ class PurchaseRequest extends AbstractRequest {
         return $this->setParameter('password', $value);
     }
 
-    public function getInstallments() {
-        return $this->getParameter('installments');
+    public function getInstallment() {
+        return $this->getParameter('installment');
     }
 
-    public function setInstallments($value) {
-        return $this->setParameter('installments', $value);
+    public function setInstallment($value) {
+        return $this->setParameter('installment', $value);
     }
 
     public function getType() {
