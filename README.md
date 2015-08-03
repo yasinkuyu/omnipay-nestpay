@@ -95,7 +95,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
                 $response = $gateway->purchase(
                 [
                     //'installment'  => '', # Taksit
-                    //'moneypoints'   => 1.00, // Set money points (Maxi puan gir)
+                    //'moneypoints'  => 1.00, // Set money points (Maxi puan gir)
                     'amount'        => 12.00,
                     'type'          => 'Auth',
                     'orderid'       => 'ORDER-365123',
@@ -148,7 +148,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
                 ]
                 )->send();
 
-                  $response = $gateway->credit(
+                $response = $gateway->credit(
                 [
                     'amount'        => 1.00,
                     'card'          => $options
