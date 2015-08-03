@@ -30,8 +30,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
         } catch (\Exception $ex) {
             throw new InvalidResponseException();
         }
-        echo $data;
-        die();
     }
 
     /**
@@ -57,12 +55,27 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     }
 
     /**
+     * Get a code describing the status of this response.
+     *
+     * @return string|null code
+     */
+    public function getCode()
+    {
+        return $this->isSuccessful()
+            ? $this->data["AuthCode"]
+            : parent::getCode();
+    }
+
+    /**
      * Get transaction reference
      *
      * @return string
      */
     public function getTransactionReference() {
-        return (string) $this->data["TransId"];
+        
+        return $this->isSuccessful()
+            ? $this->data["TransId"]
+            : '';
     }
 
     /**
@@ -72,7 +85,11 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      */
     public function getMessage() {
         if ($this->isSuccessful()) {
-            return $this->data["Response"];
+            $moneyPoints = $this->data["Extra"]->KULLANILABILIRBONUS;
+            if(!empty($moneyPoints))
+                return (string) $this->data["Response"] . '. Available money points : ' . $moneyPoints;
+            else
+                return $this->data["Response"];
         }
         return $this->data["ErrMsg"];
     }
@@ -91,17 +108,20 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
         }
     }
 
-    public function getError() {
-        if ($this->isSuccessful()) {
-            return [];
-        }
-        return $this->data["ErrMsg"];
-    }
-
+    /**
+     * Get Redirect method
+     *
+     * @return POST
+     */
     public function getRedirectMethod() {
         return 'POST';
     }
 
+    /**
+     * Get Redirect url
+     *
+     * @return null
+     */
     public function getRedirectData() {
         return null;
     }
