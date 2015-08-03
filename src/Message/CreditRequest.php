@@ -1,4 +1,6 @@
-<?php namespace Omnipay\NestPay\Message;
+<?php
+
+namespace Omnipay\NestPay\Message;
 
 /**
  * NestPay Purchase Request
@@ -22,7 +24,7 @@ class CreditRequest extends PurchaseRequest {
         $data['Number'] = $this->getCard()->getNumber();
         $data['Expires'] = $this->getCard()->getExpiryDate('my');
         $data["Cvv2Val"] = $this->getCard()->getCvv();
-        
+
         return $data;
     }
 

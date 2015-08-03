@@ -1,4 +1,6 @@
-<?php namespace Omnipay\NestPay\Message;
+<?php
+
+namespace Omnipay\NestPay\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
@@ -57,11 +59,8 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      *
      * @return string|null code
      */
-    public function getCode()
-    {
-        return $this->isSuccessful()
-            ? $this->data["AuthCode"]
-            : parent::getCode();
+    public function getCode() {
+        return $this->isSuccessful() ? $this->data["AuthCode"] : parent::getCode();
     }
 
     /**
@@ -70,10 +69,8 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      * @return string
      */
     public function getTransactionReference() {
-        
-        return $this->isSuccessful()
-            ? $this->data["TransId"]
-            : '';
+
+        return $this->isSuccessful() ? $this->data["TransId"] : '';
     }
 
     /**
@@ -84,7 +81,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     public function getMessage() {
         if ($this->isSuccessful()) {
             $moneyPoints = $this->data["Extra"]->KULLANILABILIRBONUS;
-            if(!empty($moneyPoints))
+            if (!empty($moneyPoints))
                 return (string) $this->data["Response"] . '. Available money points : ' . $moneyPoints;
             else
                 return $this->data["Response"];

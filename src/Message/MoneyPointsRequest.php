@@ -1,4 +1,6 @@
-<?php namespace Omnipay\NestPay\Message;
+<?php
+
+namespace Omnipay\NestPay\Message;
 
 /**
  * NestPay Settlement Request
@@ -10,7 +12,7 @@
 class MoneyPointsRequest extends PurchaseRequest {
 
     public function getData() {
-
+        
     }
 
 }

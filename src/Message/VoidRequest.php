@@ -1,5 +1,7 @@
-<?php namespace Omnipay\NestPay\Message;
- 
+<?php
+
+namespace Omnipay\NestPay\Message;
+
 /**
  * NestPay Void Request
  * 

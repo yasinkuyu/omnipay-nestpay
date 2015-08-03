@@ -1,4 +1,6 @@
-<?php namespace Omnipay\NestPay\Message;
+<?php
+
+namespace Omnipay\NestPay\Message;
 
 /**
  * NestPay Authorize Request
@@ -15,9 +17,8 @@ class AuthorizeRequest extends PurchaseRequest {
 
         $data['Type'] = $this->getType();
         $data['OrderId'] = $this->getOrderId();
-        
+
         return $data;
-        
     }
 
 }

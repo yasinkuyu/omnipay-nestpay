@@ -36,7 +36,9 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Omnipay\\NestPay\\" : "src/" }
+        "psr-4": {
+            "Omnipay\\NestPay\\": "src/"
+        }
     },
     "require": {
         "omnipay/common": "~2.0"
