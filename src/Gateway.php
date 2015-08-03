@@ -1,7 +1,5 @@
 <?php namespace Omnipay\NestPay;
 
-use Omnipay\NestPay\Message\CompletePurchaseRequest;
-use Omnipay\NestPay\Message\PurchaseRequest;
 use Omnipay\Common\AbstractGateway;
 
 /**
