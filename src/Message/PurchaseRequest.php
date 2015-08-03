@@ -69,37 +69,6 @@ class PurchaseRequest extends AbstractRequest {
         $data["Cvv2Val"] = $this->getCard()->getCvv();
         $data["IPAddress"] = $this->getClientIp(); 
         
-        // Todo : billing and shipping parameters
-        $dataBill = [
-            "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
-            "Street1" => $this->getCard()->getBillingAddress1(),
-            "Street2" => $this->getCard()->getBillingAddress2(),
-            "Street3" => "",
-            "City" => $this->getCard()->getBillingCity(),
-            "StateProv" => $this->getCard()->getBillingState(),
-            "PostalCode" => $this->getCard()->getBillingPostcode(),
-            "Country" => $this->getCard()->getBillingCountry(),
-            "Company" => $this->getCard()->getCompany(),
-            "TelVoice" => $this->getCard()->getBillingPhone()
-        ];
-
-        $dataShip = [
-            "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
-            "Street1" => $this->getCard()->getShippingAddress1(),
-            "Street2" => $this->getCard()->getShippingAddress2(),
-            "Street3" => "",
-            "City" => $this->getCard()->getShippingCity(),
-            "StateProv" => $this->getCard()->getShippingState(),
-            "PostalCode" => $this->getCard()->getShippingPostcode(),
-            "Country" => $this->getCard()->getShippingCountry(),
-            "Company" => $this->getCard()->getCompany(),
-            "TelVoice" => $this->getCard()->getShippingPhone()
-        ];
-
-        $data["ShipTo"] = "";
-        $data["BillTo"] = "";
-        $data["Extra"] = '';
-
         return $data;
     }
 
@@ -139,7 +108,54 @@ class PurchaseRequest extends AbstractRequest {
         }
         
         $document->appendChild($root);
+        
+        if(!empty($this->getCard()->getFirstName())){
+            $dataShip = [
+                "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
+                "Street1" => $this->getCard()->getShippingAddress1(),
+                "Street2" => $this->getCard()->getShippingAddress2(),
+                "Street3" => "",
+                "City" => $this->getCard()->getShippingCity(),
+                "StateProv" => $this->getCard()->getShippingState(),
+                "PostalCode" => $this->getCard()->getShippingPostcode(),
+                "Country" => $this->getCard()->getShippingCountry(),
+                "Company" => $this->getCard()->getCompany(),
+                "TelVoice" => $this->getCard()->getShippingPhone()
+            ];
 
+            $shipTo = $document->createElement('ShipTo');
+            foreach ($dataShip as $id => $value) {
+                $shipTo->appendChild($document->createElement($id, $value));
+            }
+            $root->appendChild($shipTo);
+
+            $dataBill = [
+                "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
+                "Street1" => $this->getCard()->getBillingAddress1(),
+                "Street2" => $this->getCard()->getBillingAddress2(),
+                "Street3" => "",
+                "City" => $this->getCard()->getBillingCity(),
+                "StateProv" => $this->getCard()->getBillingState(),
+                "PostalCode" => $this->getCard()->getBillingPostcode(),
+                "Country" => $this->getCard()->getBillingCountry(),
+                "Company" => $this->getCard()->getCompany(),
+                "TelVoice" => $this->getCard()->getBillingPhone()
+            ];
+        }
+        
+        // Money points (maxi puan)
+        if(!empty($this->getMoneyPoints())){
+            $extra = $document->createElement('Extra');
+            $extra->appendChild($document->createElement('MAXIPUAN', $this->getMoneyPoints()));
+            $root->appendChild($extra);
+        }
+
+        $billTo = $document->createElement('BillTo');
+        foreach ($dataBill as $id => $value) {
+            $billTo->appendChild($document->createElement($id, $value));
+        }
+        $root->appendChild($billTo);
+       
         // Post to NestPay
         $headers = array(
             'Content-Type' => 'application/x-www-form-urlencoded'
@@ -155,7 +171,8 @@ class PurchaseRequest extends AbstractRequest {
                 'CURLOPT_POST' => 1
             )
         ));
-        
+        echo $document->saveXML();
+        die();
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
@@ -215,6 +232,14 @@ class PurchaseRequest extends AbstractRequest {
 
     public function setOrderId($value) {
         return $this->setParameter('orderid', $value);
+    }
+ 
+    public function getMoneyPoints() {
+        return $this->getParameter('moneypoints');
+    }
+
+    public function setMoneyPoints($value) {
+        return $this->setParameter('moneypoints', $value);
     }
     
 }
