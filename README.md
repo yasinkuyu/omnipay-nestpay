@@ -157,12 +157,11 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
                 )->send();
 
                 if ($response->isSuccessful()) {
+                    //echo $response->getTransactionReference();
                     echo $response->getMessage();
                 } else {
                     echo $response->getError();
                 }
-
-                //echo $response->getTransactionReference();
 
                 // Debug
                 //var_dump($response);
