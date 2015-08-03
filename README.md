@@ -68,109 +68,109 @@ repository.
 PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of the xUnit architecture for unit testing frameworks.
 
 ## Sample App
-        <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-        use Omnipay\Omnipay;
+    <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-        class PaymentTest extends CI_Controller {
+    use Omnipay\Omnipay;
 
-            public function index() {
+    class PaymentTest extends CI_Controller {
 
-                $gateway = Omnipay::create('NestPay');
+        public function index() {
 
-                $gateway->setBank("denizbank");
-                $gateway->setUserName("DENIZTEST");
-                $gateway->setClientId("800100000");
-                $gateway->setPassword("DENIZTEST123");
-                $gateway->setTestMode(TRUE);
+            $gateway = Omnipay::create('NestPay');
 
-                $options = [
-                    'number'        => '5406675406675403',
-                    'expiryMonth'   => '12',
-                    'expiryYear'    => '2015',
-                    'cvv'           => '000',
-                    'email'         => 'yasinkuyu@gmail.com',
-                    'firstname'     => 'Yasin',
-                    'lastname'      => 'Kuyu'
-                ];
+            $gateway->setBank("denizbank");
+            $gateway->setUserName("DENIZTEST");
+            $gateway->setClientId("800100000");
+            $gateway->setPassword("DENIZTEST123");
+            $gateway->setTestMode(TRUE);
 
-                $response = $gateway->purchase(
-                [
-                    'installments'  => '', // Taksit
-                    'amount'        => 1.00,
-                    'type'          => 'Auth',
-                    'orderid'       => 'ORDER-365123',
-                    'card'          => $options
-                ]
-                )->send();
+            $options = [
+                'number'        => '5406675406675403',
+                'expiryMonth'   => '12',
+                'expiryYear'    => '2015',
+                'cvv'           => '000',
+                'email'         => 'yasinkuyu@gmail.com',
+                'firstname'     => 'Yasin',
+                'lastname'      => 'Kuyu'
+            ];
 
-                $response = $gateway->authorize(
-                [
-                    'type'          => 'PostAuth',
-                    'orderid'       => 'ORDER-365123',
-                    'card'          => $options
-                ]
-                )->send();
+            $response = $gateway->purchase(
+            [
+                'installments'  => '', // Taksit
+                'amount'        => 1.00,
+                'type'          => 'Auth',
+                'orderid'       => 'ORDER-365123',
+                'card'          => $options
+            ]
+            )->send();
 
-                $response = $gateway->capture(
-                [
-                    'orderid'       => 'ORDER-365123',
-                    'amount'        => 1.00,
-                    'currency'      => 'TRY',
-                    'card'          => $options
-                ]
-                )->send();
+            $response = $gateway->authorize(
+            [
+                'type'          => 'PostAuth',
+                'orderid'       => 'ORDER-365123',
+                'card'          => $options
+            ]
+            )->send();
+
+            $response = $gateway->capture(
+            [
+                'orderid'       => 'ORDER-365123',
+                'amount'        => 1.00,
+                'currency'      => 'TRY',
+                'card'          => $options
+            ]
+            )->send();
 
 
-                $response = $gateway->refund(
-                [
-                    'orderid'       => 'ORDER-365123',
-                    'amount'        => 1.00,
-                    'currency'      => 'TRY',
-                    'card'          => $options
-                ]
-                )->send();
+            $response = $gateway->refund(
+            [
+                'orderid'       => 'ORDER-365123',
+                'amount'        => 1.00,
+                'currency'      => 'TRY',
+                'card'          => $options
+            ]
+            )->send();
 
-                $response = $gateway->credit(
-                [
-                    'orderid'       => 'ORDER-365123',
-                    'amount'        => 1.00,
-                    'currency'      => 'TRY', // Optional (default parameter TRY)
-                    'card'          => $options
-                ]
-                )->send();
+            $response = $gateway->credit(
+            [
+                'orderid'       => 'ORDER-365123',
+                'amount'        => 1.00,
+                'currency'      => 'TRY', // Optional (default parameter TRY)
+                'card'          => $options
+            ]
+            )->send();
 
-                $response = $gateway->void(
-                [
-                    'orderid'       => 'ORDER-365123',
-                    'amount'        => 1.00,
-                    'currency'      => 'TRY',
-                    'card'          => $options
-                ]
-                )->send();
+            $response = $gateway->void(
+            [
+                'orderid'       => 'ORDER-365123',
+                'amount'        => 1.00,
+                'currency'      => 'TRY',
+                'card'          => $options
+            ]
+            )->send();
 
-                  $response = $gateway->credit(
-                [
-                    'amount'        => 1.00,
-                    'card'          => $options
-                ]
-                )->send();
+              $response = $gateway->credit(
+            [
+                'amount'        => 1.00,
+                'card'          => $options
+            ]
+            )->send();
 
-                if ($response->isRedirect())
-                    $response->redirect();
-
-                if ($response->isSuccessful()) {
-                    echo $response->getMessage();
-                } else {
-                    echo $response->getError();
-                }
-
-                // Debug
-                //var_dump($response);
-
+            if ($response->isSuccessful()) {
+                echo $response->getMessage();
+            } else {
+                echo $response->getError();
             }
 
+            //echo $response->getTransactionReference();
+
+            // Debug
+            //var_dump($response);
+
         }
+
+    }
 
 
 
