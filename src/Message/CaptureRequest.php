@@ -1,8 +1,4 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
-
-use Omnipay\Common\Message\AbstractRequest;
+<?php namespace Omnipay\NestPay\Message;
 
 /**
  * NestPay Complete Capture Request

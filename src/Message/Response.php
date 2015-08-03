@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;

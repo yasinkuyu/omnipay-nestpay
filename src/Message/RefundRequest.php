@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 /**
  * NestPay Purchase Request
@@ -13,7 +11,7 @@ class RefundRequest extends PurchaseRequest {
 
     public function getData() {
 
-        $this->validate('orderid', 'amount', 'currency');
+        $this->validate('orderid', 'amount');
         $currency = $this->getCurrency();
 
         $data['Type'] = 'Credit';
