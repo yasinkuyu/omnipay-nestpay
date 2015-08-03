@@ -162,6 +162,13 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
                 ]
                 )->send();
 
+                $response = $gateway->money(
+                [
+                    'moneypoints'  => "1",
+                    'card'         => $options
+                ]
+                )->send();
+
                 if ($response->isSuccessful()) {
                     //echo $response->getTransactionReference();
                     echo $response->getMessage();
@@ -175,6 +182,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
             }
 
         }
+
 
 
 ## Support
