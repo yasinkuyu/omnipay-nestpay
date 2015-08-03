@@ -23,7 +23,7 @@ class Gateway extends AbstractGateway {
             'username' => '',
             'clientId' => '',
             'password' => '',
-            'installments' => '',
+            'installment' => '',
             'type' => 'Auth',
             'currency' => 'TRY'
         );
@@ -93,12 +93,12 @@ class Gateway extends AbstractGateway {
         return $this->setParameter('password', $value);
     }
 
-    public function getInstallments() {
-        return $this->getParameter('installments');
+    public function getInstallment() {
+        return $this->getParameter('installment');
     }
 
-    public function setInstallments($value) {
-        return $this->setParameter('installments', $value);
+    public function setInstallment($value) {
+        return $this->setParameter('installment', $value);
     }
 
     public function getType() {
