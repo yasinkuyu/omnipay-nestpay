@@ -143,13 +143,25 @@ class PurchaseRequest extends AbstractRequest {
             ];
         }
         
-        // Money points (maxi puan)
+        // Set money points (maxi puan)
+        $extra = $document->createElement('Extra');
         if(!empty($this->getMoneyPoints())){
-            $extra = $document->createElement('Extra');
             $extra->appendChild($document->createElement('MAXIPUAN', $this->getMoneyPoints()));
             $root->appendChild($extra);
         }
 
+        // Get money points (maxi puan)
+        if(!empty($this->getMoneyPoints())){
+            $extra->appendChild($document->createElement('MAXIPUANSORGU', 'MAXIPUANSORGU'));
+            $root->appendChild($extra);
+        }
+        
+        // Settlement
+        if(!empty($this->getSettlement())){
+            $extra->appendChild($document->createElement('SETTLE', 'SETTLE'));
+            $root->appendChild($extra);
+        }
+        
         $billTo = $document->createElement('BillTo');
         foreach ($dataBill as $id => $value) {
             $billTo->appendChild($document->createElement($id, $value));
@@ -171,7 +183,7 @@ class PurchaseRequest extends AbstractRequest {
                 'CURLOPT_POST' => 1
             )
         ));
-         
+ 
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
@@ -239,6 +251,14 @@ class PurchaseRequest extends AbstractRequest {
 
     public function setMoneyPoints($value) {
         return $this->setParameter('moneypoints', $value);
+    }
+    
+    public function getSettlement() {
+        return $this->getParameter('settlement');
+    }
+
+    public function setSettlement($value) {
+        return $this->setParameter('settlement', $value);
     }
     
 }

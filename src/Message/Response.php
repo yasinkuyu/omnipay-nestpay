@@ -28,7 +28,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
         } catch (\Exception $ex) {
             throw new InvalidResponseException();
         }
-       
     }
 
     /**

@@ -24,7 +24,7 @@ class Gateway extends AbstractGateway
             'username'      => '',
             'clientId'      => '',
             'password'      => '',
-            'installments'  => '00',
+            'installments'  => '',
             'type'          => 'Auth',
             'currency'      => 'TRY'
             
@@ -59,6 +59,16 @@ class Gateway extends AbstractGateway
     public function credit(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\NestPay\Message\CreditRequest', $parameters);
+    }
+    
+    public function settle(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\SettleRequest', $parameters);
+    }
+    
+    public function money(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\MoneyPointsRequest', $parameters);
     }
     
     public function getBank()
@@ -125,4 +135,19 @@ class Gateway extends AbstractGateway
         return $this->setParameter('orderid', $value);
     }
     
+    public function getMoneyPoints() {
+        return $this->getParameter('moneypoints');
+    }
+
+    public function setMoneyPoints($value) {
+        return $this->setParameter('moneypoints', $value);
+    }
+        
+    public function getSettlement() {
+        return $this->getParameter('settlement');
+    }
+
+    public function setSettlement($value) {
+        return $this->setParameter('settlement', $value);
+    }
 }
