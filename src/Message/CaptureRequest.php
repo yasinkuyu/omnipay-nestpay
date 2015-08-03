@@ -11,7 +11,7 @@ class CaptureRequest extends PurchaseRequest {
 
     public function getData() {
 
-        $this->validate('orderid', 'amount', 'currency');
+        $this->validate('orderid', 'amount');
         $currency = $this->getCurrency();
 
         $data['Type'] = 'PostAuth';
