@@ -1,4 +1,6 @@
-<?php namespace Omnipay\NestPay\Message;
+<?php
+
+namespace Omnipay\NestPay\Message;
 
 use DOMDocument;
 use Omnipay\Common\Message\AbstractRequest;
@@ -23,7 +25,6 @@ class PurchaseRequest extends AbstractRequest {
         'kuveytturk' => 'kuveytturk.est.com.tr',
         'halkbank' => 'sanalpos.halkbank.com.tr',
         'anadolubank' => 'anadolusanalpos.est.com.tr',
-        
         // Todo
         'ingbank' => 'ingbank.est.com.tr',
         'citibank' => 'citibank.est.com.tr',
@@ -67,13 +68,13 @@ class PurchaseRequest extends AbstractRequest {
         $data['Number'] = $this->getCard()->getNumber();
         $data['Expires'] = $this->getCard()->getExpiryDate('my');
         $data["Cvv2Val"] = $this->getCard()->getCvv();
-        $data["IPAddress"] = $this->getClientIp(); 
-        
+        $data["IPAddress"] = $this->getClientIp();
+
         return $data;
     }
 
     public function sendData($data) {
-        
+
         // API info
         $data['Name'] = $this->getUserName();
         $data['ClientId'] = $this->getClientId();
@@ -83,10 +84,10 @@ class PurchaseRequest extends AbstractRequest {
         // Get geteway
         // ex: isbank
         $gateway = $this->getBank();
-        
+
         // Todo: http protocol
         $protocol = 'http://';
-        
+
         // Test mode
         $test = $this->getTestMode();
 
@@ -106,10 +107,10 @@ class PurchaseRequest extends AbstractRequest {
         foreach ($data as $id => $value) {
             $root->appendChild($document->createElement($id, $value));
         }
-        
+
         $document->appendChild($root);
-        
-        if(!empty($this->getCard()->getFirstName())){
+
+        if (!empty($this->getCard()->getFirstName())) {
             $dataShip = [
                 "Name" => $this->getCard()->getFirstName() . " " . $this->getCard()->getLastName(),
                 "Street1" => $this->getCard()->getShippingAddress1(),
@@ -142,32 +143,32 @@ class PurchaseRequest extends AbstractRequest {
                 "TelVoice" => $this->getCard()->getBillingPhone()
             ];
         }
-        
+
         // Set money points (maxi puan)
         $extra = $document->createElement('Extra');
-        if(!empty($this->getMoneyPoints())){
+        if (!empty($this->getMoneyPoints())) {
             $extra->appendChild($document->createElement('MAXIPUAN', $this->getMoneyPoints()));
             $root->appendChild($extra);
         }
 
         // Get money points (maxi puan)
-        if(!empty($this->getMoneyPoints())){
+        if (!empty($this->getMoneyPoints())) {
             $extra->appendChild($document->createElement('MAXIPUANSORGU', 'MAXIPUANSORGU'));
             $root->appendChild($extra);
         }
-        
+
         // Settlement
-        if(!empty($this->getSettlement())){
+        if (!empty($this->getSettlement())) {
             $extra->appendChild($document->createElement('SETTLE', 'SETTLE'));
             $root->appendChild($extra);
         }
-        
+
         $billTo = $document->createElement('BillTo');
         foreach ($dataBill as $id => $value) {
             $billTo->appendChild($document->createElement($id, $value));
         }
         $root->appendChild($billTo);
-       
+
         // Post to NestPay
         $headers = array(
             'Content-Type' => 'application/x-www-form-urlencoded'
@@ -183,7 +184,7 @@ class PurchaseRequest extends AbstractRequest {
                 'CURLOPT_POST' => 1
             )
         ));
- 
+
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
@@ -236,7 +237,7 @@ class PurchaseRequest extends AbstractRequest {
     public function setType($value) {
         return $this->setParameter('type', $value);
     }
-   
+
     public function getOrderId() {
         return $this->getParameter('orderid');
     }
@@ -244,7 +245,7 @@ class PurchaseRequest extends AbstractRequest {
     public function setOrderId($value) {
         return $this->setParameter('orderid', $value);
     }
- 
+
     public function getMoneyPoints() {
         return $this->getParameter('moneypoints');
     }
@@ -252,7 +253,7 @@ class PurchaseRequest extends AbstractRequest {
     public function setMoneyPoints($value) {
         return $this->setParameter('moneypoints', $value);
     }
-    
+
     public function getSettlement() {
         return $this->getParameter('settlement');
     }
@@ -260,5 +261,5 @@ class PurchaseRequest extends AbstractRequest {
     public function setSettlement($value) {
         return $this->setParameter('settlement', $value);
     }
-    
+
 }
