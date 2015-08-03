@@ -1,6 +1,4 @@
-<?php
-
-namespace Omnipay\NestPay\Message;
+<?php namespace Omnipay\NestPay\Message;
 
 use DOMDocument;
 use Omnipay\Common\Message\AbstractRequest;
@@ -25,6 +23,8 @@ class PurchaseRequest extends AbstractRequest {
         'kuveytturk' => 'kuveytturk.est.com.tr',
         'halkbank' => 'sanalpos.halkbank.com.tr',
         'anadolubank' => 'anadolusanalpos.est.com.tr',
+        
+        // Todo
         'ingbank' => 'ingbank.est.com.tr',
         'citibank' => 'citibank.est.com.tr',
         'cardplus' => 'cardplus.est.com.tr'
@@ -50,26 +50,9 @@ class PurchaseRequest extends AbstractRequest {
 
     public function getData() {
 
-        $gateway = $this->getBank();
-        $protocol = 'http://';
-        $test = $this->getTestMode();
-
-        if (!array_key_exists($gateway, $this->endpoints)) {
-            throw new \Exception('Invalid Gateway');
-        } else {
-            $this->endpoint = $this->endpoints[$gateway];
-        }
-
-        $this->endpoint = $test == TRUE ? $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
-
-        $this->validate('amount', 'card', 'currency');
+        $this->validate('amount', 'card');
         $this->getCard()->validate();
         $currency = $this->getCurrency();
-
-        $data['Name'] = $this->getUserName();
-        $data['ClientId'] = $this->getClientId();
-        $data['Password'] = $this->getPassword();
-        $data['Mode'] = $test ? 'T' : 'P';
 
         $data['Email'] = $this->getCard()->getEmail();
         $data['OrderId'] = '';
@@ -121,6 +104,30 @@ class PurchaseRequest extends AbstractRequest {
     }
 
     public function sendData($data) {
+        
+        // API info
+        $data['Name'] = $this->getUserName();
+        $data['ClientId'] = $this->getClientId();
+        $data['Password'] = $this->getPassword();
+        $data['Mode'] = $this->getTestMode() ? 'T' : 'P';
+
+        // Get geteway
+        $gateway = $this->getBank();
+        
+        // Todo: http protocol
+        $protocol = 'http://';
+        
+        // Test mode
+        $test = $this->getTestMode();
+
+        if (!array_key_exists($gateway, $this->endpoints)) {
+            throw new \Exception('Invalid Gateway');
+        } else {
+            $this->endpoint = $this->endpoints[$gateway];
+        }
+
+        // Build api post url
+        $this->endpoint = $test == TRUE ? $this->endpoints["test"] : $protocol . $this->endpoints[$gateway] . $this->url["purchase"];
 
         $document = new DOMDocument('1.0', 'UTF-8');
         $root = $document->createElement('CC5Request');
@@ -147,7 +154,8 @@ class PurchaseRequest extends AbstractRequest {
                 'CURLOPT_POST' => 1
             )
         ));
-
+        
+        echo $document->saveXML(); die();
         $httpResponse = $this->httpClient->post($this->endpoint, $headers, $document->saveXML())->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
@@ -200,5 +208,13 @@ class PurchaseRequest extends AbstractRequest {
     public function setType($value) {
         return $this->setParameter('type', $value);
     }
+   
+    public function getOrderId() {
+        return $this->getParameter('orderid');
+    }
 
+    public function setOrderId($value) {
+        return $this->setParameter('orderid', $value);
+    }
+    
 }

@@ -1,4 +1,6 @@
-<?php namespace Omnipay\NestPay\Message;
+<?php
+
+namespace Omnipay\NestPay\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
@@ -24,10 +26,12 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     public function __construct(RequestInterface $request, $data) {
         $this->request = $request;
         try {
-            $this->data = (array)simplexml_load_string($data);
+            $this->data = (array) simplexml_load_string($data);
         } catch (\Exception $ex) {
             throw new InvalidResponseException();
         }
+        echo $data;
+        die();
     }
 
     /**
@@ -36,7 +40,11 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
      * @return bool
      */
     public function isSuccessful() {
-        return (string) $this->data["ProcReturnCode"] === '00' || $this->data["Response"] === 'Approved';
+        if (isset($this->data["ProcReturnCode"])) {
+            return (string) $this->data["ProcReturnCode"] === '00' || $this->data["Response"] === 'Approved';
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -97,5 +105,5 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     public function getRedirectData() {
         return null;
     }
-    
+
 }

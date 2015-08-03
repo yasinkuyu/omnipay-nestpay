@@ -26,30 +26,41 @@ class Gateway extends AbstractGateway
             'username'      => '',
             'clientId'      => '',
             'password'      => '',
-            'installment'   => '0',
-            'type'          => 'PreAuth'
+            'installments'  => '00',
+            'type'          => 'Auth',
+            'currency'      => 'TRY'
             
         );
     }
 
+    public function authorize(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\AuthorizeRequest', $parameters);
+    }
+    
+    public function capture(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\CaptureRequest', $parameters);
+    }
+    
     public function purchase(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\NestPay\Message\PurchaseRequest', $parameters);
     }
-
-    public function referencedPurchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\NestPay\Message\ReferencedPurchaseRequest', $parameters);
-    }
-
-    public function completePurchase(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\NestPay\Message\CompletePurchaseRequest', $parameters);
-    }
-
+ 
     public function refund(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\NestPay\Message\RefundRequest', $parameters);
+    }
+ 
+    public function void(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\VoidRequest', $parameters);
+    }
+    
+    public function credit(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\NestPay\Message\CreditRequest', $parameters);
     }
     
     public function getBank()
@@ -91,15 +102,15 @@ class Gateway extends AbstractGateway
     {
         return $this->setParameter('password', $value);
     }
-    
-    public function getInstallment() {
-        return $this->getParameter('installment');
+
+    public function getInstallments() {
+        return $this->getParameter('installments');
     }
 
-    public function setInstallment($value) {
-        return $this->setParameter('installment', $value);
+    public function setInstallments($value) {
+        return $this->setParameter('installments', $value);
     }
-       
+    
     public function getType() {
         return $this->getParameter('type');
     }
@@ -107,4 +118,13 @@ class Gateway extends AbstractGateway
     public function setType($value) {
         return $this->setParameter('type', $value);
     }
+    
+    public function getOrderId() {
+        return $this->getParameter('orderid');
+    }
+
+    public function setOrderId($value) {
+        return $this->setParameter('orderid', $value);
+    }
+    
 }
