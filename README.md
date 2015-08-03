@@ -1,6 +1,6 @@
 # Omnipay: NestPay
 
-**NestPay (EST) (Ýþ Bankasý, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library**
+**NestPay (EST) (Ä°ÅŸ BankasÄ±, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library**
 
 [![Latest Stable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/stable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
 [![Total Downloads](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/downloads)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
@@ -11,7 +11,7 @@
 processing library for PHP 5.3+. This package implements NestPay (Turkey Payment Gateways) support for Omnipay.
 
 
-NestPay (Eski adýyla EST) altyapýsýný kullanan Türkiye bankarý için Omnipay kütüphanesi. Desteklenmesi hedeflenen bankalar; Ýþ Bankasý, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus.
+NestPay (Eski adÄ±yla EST) altyapÄ±sÄ±nÄ± kullanan TÃ¼rkiye bankarÄ± iÃ§in Omnipay kÃ¼tÃ¼phanesi. Desteklenmesi hedeflenen bankalar; Ä°ÅŸ BankasÄ±, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus.
 
 
 ## Installation
@@ -37,7 +37,7 @@ And run composer to update your dependencies:
 The following gateways are provided by this package:
 
 * NestPay
-    - Ýþ Bankasý 
+    - Ä°ÅŸ BankasÄ± 
     - Akbank
     - Finansbank 
     - Denizbank
@@ -94,7 +94,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
                 $response = $gateway->purchase(
                 [
-                    //'installments'  => '', # Taksit
+                    //'installment'  => '', # Taksit
                     //'moneypoints'   => 1.00, // Set money points (Maxi puan gir)
                     'amount'        => 12.00,
                     'type'          => 'Auth',
