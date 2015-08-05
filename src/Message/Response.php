@@ -90,6 +90,15 @@ class Response extends AbstractResponse implements RedirectResponseInterface {
     }
 
     /**
+     * Get error
+     *
+     * @return string
+     */
+    public function getError() {
+        return $this->data["ErrMsg"];
+    }
+
+    /**
      * Get Redirect url
      *
      * @return string
