@@ -25,7 +25,8 @@ class Gateway extends AbstractGateway {
             'password' => '',
             'installment' => '',
             'type' => 'Auth',
-            'currency' => 'TRY'
+            'currency' => 'TRY',
+            'testMode' => false
         );
     }
 
