@@ -37,7 +37,7 @@ And run composer to update your dependencies:
 The following gateways are provided by this package:
 
 * NestPay
-    - Ýþ Bankasý 
+    - İş Bankası 
     - Akbank
     - Finansbank 
     - Denizbank
