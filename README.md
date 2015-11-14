@@ -184,9 +184,10 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
         }
 
 
-## NestPay (EST)
-(İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus) gateway for Omnipay payment processing library
-https://github.com/yasinkuyu/omnipay-nestpay
+
+## Postnet
+Posnet (Yapı Kredi, Vakıfbank, Anadolubank) gateway for Omnipay payment processing library
+https://github.com/yasinkuyu/omnipay-posnet
 
 ##Iyzico
 Iyzico gateway for Omnipay payment processing library
