@@ -16,6 +16,9 @@ NestPay (eski adıyla EST) altyapısını kullanan Türkiye bankaları için Omn
 
 ## Installation
 
+composer require yasinkuyu/omnipay-nestpay:~2.0
+
+
 Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply add it
 to your `composer.json` file:
 
