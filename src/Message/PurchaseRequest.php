@@ -26,6 +26,8 @@ class PurchaseRequest extends AbstractRequest {
         'halkbank' => 'sanalpos.halkbank.com.tr',
         'anadolubank' => 'anadolusanalpos.est.com.tr',
         'hsbc' => 'vpos.advantage.com.tr',
+        'ziraatbank' => 'sanalpos2.ziraatbank.com.tr'
+        
         // Todo
         'ingbank' => 'ingbank.est.com.tr',
         'citibank' => 'citibank.est.com.tr',
