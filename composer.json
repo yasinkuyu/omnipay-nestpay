@@ -1,7 +1,7 @@
 {
     "name": "yasinkuyu/omnipay-nestpay",
     "type": "library",
-    "description": "NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus sanal pos) gateway for Omnipay payment processing library",
+    "description": "NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus, Ziraat Bankası sanal pos) gateway for Omnipay payment processing library",
     "keywords": [
         "nestpay",
         "est",
@@ -15,6 +15,7 @@
         "ING Bank",
         "Citibank",
         "Cardplus",
+        "Ziraat Bankası",
         "gateway",
         "merchant",
         "sanal pos",
