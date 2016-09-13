@@ -11,7 +11,7 @@
 processing library for PHP 5.3+. This package implements NestPay (Turkish Payment Gateways) support for Omnipay.
 
 
-NestPay (eski adıyla EST) altyapısını kullanan Türkiye bankaları için Omnipay kütüphanesi. Desteklenmesi hedeflenen bankalar; İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus.
+NestPay (eski adıyla EST) altyapısını kullanan Türkiye bankaları için Omnipay kütüphanesi. Desteklenmesi hedeflenen bankalar; İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus, Ziraat Bankası
 
 
 ## Installation
