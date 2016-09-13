@@ -33,6 +33,7 @@ The following gateways are provided by this package:
     - ING Bank 
     - Citibank 
     - Cardplus
+    - Ziraat Bankası
 
 Gateway Methods
 
