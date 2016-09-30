@@ -175,7 +175,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
 
 
-## Postnet
+## Posnet
 Posnet (Yapı Kredi, Vakıfbank, Anadolubank) gateway for Omnipay payment processing library
 https://github.com/yasinkuyu/omnipay-posnet
 
