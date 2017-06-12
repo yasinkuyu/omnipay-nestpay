@@ -191,6 +191,9 @@ https://github.com/yasinkuyu/omnipay-gvp
 BKM Express gateway for Omnipay payment processing library
 https://github.com/yasinkuyu/omnipay-bkm
 
+## Paratika
+Paratika (Asseco) (Akbank, TEB, Halkbank, Finansbank, İş Bankası, Şekerbank, Vakıfbank ) gateway for Omnipay payment processing library
+https://github.com/yasinkuyu/omnipay-paratika
 
 
 ## Composer Installation
