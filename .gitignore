@@ -2,3 +2,5 @@
 /nbproject
 composer.lock
 composer.phar
+.idea/
+src/.DS_Store

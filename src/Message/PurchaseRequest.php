@@ -66,7 +66,7 @@ class PurchaseRequest extends AbstractRequest {
         $data['UserId'] = '';
         $data['Type'] = $this->getType();
         $data['Currency'] = $this->currencies[$currency];
-        $data['Taksit'] = $this->getInstallment();
+        $data['Installment'] = $this->getInstallment();
 
         $data['Total'] = $this->getAmount();
         $data['Number'] = $this->getCard()->getNumber();
@@ -90,7 +90,7 @@ class PurchaseRequest extends AbstractRequest {
         $gateway = $this->getBank();
 
         // Todo: http protocol
-        $protocol = 'http://';
+        $protocol = 'https://';
 
         if (!array_key_exists($gateway, $this->endpoints)) {
             throw new \Exception('Invalid Gateway');
