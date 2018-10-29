@@ -70,7 +70,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
             $options = [
             	'number'        => '5406675406675403',
             	'expiryMonth'   => '12',
-            	'expiryYear'    => '2017',
+            	'expiryYear'    => '2022',
             	'cvv'           => '000',
             	'email'         => 'yasinkuyu@gmail.com',
             	'firstname'     => 'Yasin',
@@ -167,7 +167,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
                     exit($response->getMessage());
                 }
             } catch (\Exception $e) {
-                exit('Sorry, there was an error processing your payment. Please try again later.');
+                exit($e->getMessage());
             }
             
             // Debug
