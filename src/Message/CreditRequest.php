@@ -21,7 +21,6 @@ class CreditRequest extends PurchaseRequest {
         $data['Currency'] = $this->currencies[$currency];
         $data['Total'] = $this->getAmount();
         $data['Number'] = $this->getCard()->getNumber();
-        $data['Number'] = $this->getCard()->getNumber();
         $data['Expires'] = $this->getCard()->getExpiryDate('my');
         $data["Cvv2Val"] = $this->getCard()->getCvv();
 
