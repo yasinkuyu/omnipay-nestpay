@@ -61,10 +61,10 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
             
             $gateway = Omnipay::create('NestPay');
             
-            $gateway->setBank("denizbank");
-            $gateway->setUserName("DENIZTEST");
-            $gateway->setClientId("800100000");
-            $gateway->setPassword("DENIZTEST123");
+            $gateway->setBank("isbank");
+            $gateway->setUserName("api");
+            $gateway->setClientId("700658785");
+            $gateway->setPassword("TEST1111");
             $gateway->setTestMode(TRUE);
             
             $options = [
