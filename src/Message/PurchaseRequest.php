@@ -16,7 +16,7 @@ class PurchaseRequest extends AbstractRequest {
 
     protected $endpoint = '';
     protected $endpoints = [
-        'test' => 'https://testvpos.asseco-see.com.tr/fim/api',
+        'test' => 'https://entegrasyon.asseco-see.com.tr/fim/api',
         'asseco' => 'https://entegrasyon.asseco-see.com.tr/fim/api',
         'isbank' => 'spos.isbank.com.tr',
         'akbank' => 'www.sanalakpos.com',
