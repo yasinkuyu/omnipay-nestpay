@@ -205,7 +205,7 @@ composer install
 vendor/bin/phpunit
 ```
 
-## My other Omnipay packages
+## Other Omnipay packages
 
 - **[Omnipay: GVP (Garanti BBVA)](https://github.com/yasinkuyu/omnipay-gvp)** — Garanti BBVA virtual POS; hosted payment page
 - **[Omnipay: Paratika](https://github.com/yasinkuyu/omnipay-paratika)** — Paratika, VakıfPayS and ZiraatPay hosted payment page
