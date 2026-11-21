@@ -3,135 +3,129 @@
 namespace Omnipay\NestPay;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\NestPay\Message\AuthorizeRequest;
+use Omnipay\NestPay\Message\CaptureRequest;
+use Omnipay\NestPay\Message\CompletePurchaseRequest;
+use Omnipay\NestPay\Message\FetchTransactionRequest;
+use Omnipay\NestPay\Message\PurchaseRequest;
+use Omnipay\NestPay\Message\RefundRequest;
+use Omnipay\NestPay\Message\VoidRequest;
 
 /**
- * NestPay Gateway
- * 
- * (c) Yasin Kuyu
- * 2015, insya.com
- * http://www.github.com/yasinkuyu/omnipay-nestpay
+ * NestPay (EST, Payten / Asseco) sanal POS.
+ *
+ * purchase()          3D ödeme formu (varsayılan 3D Pay Hosting: kart bankanın sayfasında girilir). Yanıt bir yönlendirmedir;
+ *                     getRedirectUrl() / getRedirectData() POST formu olarak tarayıcıya verilir.
+ * completePurchase()  bankanın dönüşü (okUrl / failUrl / callbackUrl): imza doğrulanır, sonuç okunur. acceptNotification() aynısı.
+ * refund() / void()   XML API (CC5Request) ile iade / iptal; capture() ön provizyonu kapatır; fetchTransaction() durum sorgular.
+ *
+ * (c) Yasin Kuyu — https://github.com/yasinkuyu/omnipay-nestpay
  */
-class Gateway extends AbstractGateway {
-
-    public function getName() {
+class Gateway extends AbstractGateway
+{
+    public function getName(): string
+    {
         return 'NestPay';
     }
 
-    public function getDefaultParameters() {
-        return array(
-            'bank' => '',
-            'username' => '',
+    public function getDefaultParameters(): array
+    {
+        return [
+            'bank' => 'isbank',
             'clientId' => '',
+            'storeKey' => '',
+            'username' => '',
             'password' => '',
-            'installment' => '',
-            'type' => 'Auth',
-            'currency' => 'TRY',
-            'testMode' => false
-        );
+            'storeType' => '3d_pay_hosting',
+            'lang' => 'tr',
+            'testMode' => false,
+        ];
     }
 
-    public function authorize(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\AuthorizeRequest', $parameters);
+    /** Banka kodu: isbank, akbank, halkbank, ziraat, teb, finansbank, ingbank, sekerbank, anadolubank (Gateway::banks()) */
+    public function getBank(): ?string { return $this->getParameter('bank'); }
+    public function setBank($value): self { return $this->setParameter('bank', $value); }
+
+    /** Listede olmayan banka için est3Dgate adresi (https) */
+    public function getEndpoint(): ?string { return $this->getParameter('endpoint'); }
+    public function setEndpoint($value): self { return $this->setParameter('endpoint', $value); }
+
+    /** Mağaza numarası */
+    public function getClientId(): ?string { return $this->getParameter('clientId'); }
+    public function setClientId($value): self { return $this->setParameter('clientId', $value); }
+
+    /** 3D güvenlik anahtarı (store key) */
+    public function getStoreKey(): ?string { return $this->getParameter('storeKey'); }
+    public function setStoreKey($value): self { return $this->setParameter('storeKey', $value); }
+
+    /** XML API kullanıcısı (iade, iptal, sorgu) */
+    public function getUsername(): ?string { return $this->getParameter('username'); }
+    public function setUsername($value): self { return $this->setParameter('username', $value); }
+
+    public function getPassword(): ?string { return $this->getParameter('password'); }
+    public function setPassword($value): self { return $this->setParameter('password', $value); }
+
+    /** 3d_pay_hosting | 3d_pay | 3d */
+    public function getStoreType(): ?string { return $this->getParameter('storeType'); }
+    public function setStoreType($value): self { return $this->setParameter('storeType', $value); }
+
+    /** Banka sonuç ekranından dönüşe kadar saniye (bankanın varsayılanı 300) */
+    public function getRefreshTime() { return $this->getParameter('refreshTime'); }
+    public function setRefreshTime($value): self { return $this->setParameter('refreshTime', $value); }
+
+    public function getLang(): ?string { return $this->getParameter('lang'); }
+    public function setLang($value): self { return $this->setParameter('lang', $value); }
+
+    /** Bilinen bankalar: kod => [3D adresi, XML API adresi] */
+    public static function banks(): array
+    {
+        return Message\AbstractRequest::BANKS;
     }
 
-    public function capture(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\CaptureRequest', $parameters);
+    public function purchase(array $options = []): PurchaseRequest
+    {
+        return $this->createRequest(PurchaseRequest::class, $options);
     }
 
-    public function purchase(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\PurchaseRequest', $parameters);
+    public function completePurchase(array $options = []): CompletePurchaseRequest
+    {
+        return $this->createRequest(CompletePurchaseRequest::class, $options);
     }
 
-    public function refund(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\RefundRequest', $parameters);
+    /** Ön provizyon (PreAuth) için 3D formu; capture() ile kapatılır */
+    public function authorize(array $options = []): AuthorizeRequest
+    {
+        return $this->createRequest(AuthorizeRequest::class, $options);
     }
 
-    public function void(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\VoidRequest', $parameters);
+    public function completeAuthorize(array $options = []): CompletePurchaseRequest
+    {
+        return $this->createRequest(CompletePurchaseRequest::class, $options);
     }
 
-    public function credit(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\CreditRequest', $parameters);
+    /** callbackUrl bildirimi: completePurchase ile aynı doğrulama */
+    public function acceptNotification(array $options = []): CompletePurchaseRequest
+    {
+        return $this->createRequest(CompletePurchaseRequest::class, $options);
     }
 
-    public function settle(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\SettleRequest', $parameters);
+    public function capture(array $options = []): CaptureRequest
+    {
+        return $this->createRequest(CaptureRequest::class, $options);
     }
 
-    public function money(array $parameters = array()) {
-        return $this->createRequest('\Omnipay\NestPay\Message\MoneyPointsRequest', $parameters);
+    public function refund(array $options = []): RefundRequest
+    {
+        return $this->createRequest(RefundRequest::class, $options);
     }
 
-    public function getBank() {
-        return $this->getParameter('bank');
+    public function void(array $options = []): VoidRequest
+    {
+        return $this->createRequest(VoidRequest::class, $options);
     }
 
-    public function setBank($value) {
-        return $this->setParameter('bank', $value);
+    public function fetchTransaction(array $options = []): FetchTransactionRequest
+    {
+        return $this->createRequest(FetchTransactionRequest::class, $options);
     }
-
-    public function getUserName() {
-        return $this->getParameter('username');
-    }
-
-    public function setUserName($value) {
-        return $this->setParameter('username', $value);
-    }
-
-    public function getClientId() {
-        return $this->getParameter('clientId');
-    }
-
-    public function setClientId($value) {
-        return $this->setParameter('clientId', $value);
-    }
-
-    public function getPassword() {
-        return $this->getParameter('password');
-    }
-
-    public function setPassword($value) {
-        return $this->setParameter('password', $value);
-    }
-
-    public function getInstallment() {
-        return $this->getParameter('installment');
-    }
-
-    public function setInstallment($value) {
-        return $this->setParameter('installment', $value);
-    }
-
-    public function getType() {
-        return $this->getParameter('type');
-    }
-
-    public function setType($value) {
-        return $this->setParameter('type', $value);
-    }
-
-    public function getOrderId() {
-        return $this->getParameter('orderid');
-    }
-
-    public function setOrderId($value) {
-        return $this->setParameter('orderid', $value);
-    }
-
-    public function getMoneyPoints() {
-        return $this->getParameter('moneypoints');
-    }
-
-    public function setMoneyPoints($value) {
-        return $this->setParameter('moneypoints', $value);
-    }
-
-    public function getSettlement() {
-        return $this->getParameter('settlement');
-    }
-
-    public function setSettlement($value) {
-        return $this->setParameter('settlement', $value);
-    }
-
 }

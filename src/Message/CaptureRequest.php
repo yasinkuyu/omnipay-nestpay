@@ -2,26 +2,18 @@
 
 namespace Omnipay\NestPay\Message;
 
-/**
- * NestPay Complete Capture Request
- * 
- * (c) Yasin Kuyu
- * 2015, insya.com
- * http://www.github.com/yasinkuyu/omnipay-nestpay
- */
-class CaptureRequest extends PurchaseRequest {
-
-    public function getData() {
-
-        $this->validate('orderid', 'amount');
-        $currency = $this->getCurrency();
-
-        $data['Type'] = 'PostAuth';
-        $data['OrderId'] = $this->getOrderId();
-        $data['Currency'] = $this->currencies[$currency];
-        $data['Total'] = $this->getAmount();
+/** Ön provizyonu kapatır (PostAuth). amount verilmezse provizyonun tamamı. */
+class CaptureRequest extends AbstractXmlRequest
+{
+    protected function body(): array
+    {
+        $this->validate('transactionId');
+        $data = ['Type' => 'PostAuth', 'OrderId' => (string) $this->getTransactionId()];
+        if ($this->getParameter('amount') !== null) {
+            $data['Total'] = $this->getAmount();
+            $data['Currency'] = $this->getCurrencyNumeric();
+        }
 
         return $data;
     }
-
 }

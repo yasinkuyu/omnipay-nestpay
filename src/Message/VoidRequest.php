@@ -2,23 +2,13 @@
 
 namespace Omnipay\NestPay\Message;
 
-/**
- * NestPay Void Request
- * 
- * (c) Yasin Kuyu
- * 2015, insya.com
- * http://www.github.com/yasinkuyu/omnipay-nestpay
- */
-class VoidRequest extends PurchaseRequest {
+/** İptal (Void): yalnız aynı gün, gün sonundan önce; tutarın tamamı, karta yansımaz. transactionId = sipariş no (oid). */
+class VoidRequest extends AbstractXmlRequest
+{
+    protected function body(): array
+    {
+        $this->validate('transactionId');
 
-    public function getData() {
-
-        $this->validate('orderid');
-
-        $data['Type'] = 'Void';
-        $data['OrderId'] = $this->getOrderId();
-
-        return $data;
+        return ['Type' => 'Void', 'OrderId' => (string) $this->getTransactionId()];
     }
-
 }

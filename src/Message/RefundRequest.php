@@ -2,26 +2,13 @@
 
 namespace Omnipay\NestPay\Message;
 
-/**
- * NestPay Purchase Request
- * 
- * (c) Yasin Kuyu
- * 2015, insya.com
- * http://www.github.com/yasinkuyu/omnipay-nestpay
- */
-class RefundRequest extends PurchaseRequest {
+/** İade (Credit): transactionId = sipariş no (oid), amount = iade tutarı. Gün sonundan sonra / kısmi tutarlar için. */
+class RefundRequest extends AbstractXmlRequest
+{
+    protected function body(): array
+    {
+        $this->validate('transactionId', 'amount');
 
-    public function getData() {
-
-        $this->validate('orderid', 'amount');
-        $currency = $this->getCurrency();
-
-        $data['Type'] = 'Credit';
-        $data['OrderId'] = $this->getOrderId();
-        $data['Currency'] = $this->currencies[$currency];
-        $data['Total'] = $this->getAmount();
-
-        return $data;
+        return ['Type' => 'Credit', 'OrderId' => (string) $this->getTransactionId(), 'Total' => $this->getAmount(), 'Currency' => $this->getCurrencyNumeric()];
     }
-
 }

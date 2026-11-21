@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: text/xml;charset=UTF-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CC5Response><OrderId>ORD-1</OrderId><GroupId>ORD-1</GroupId><Response>Approved</Response><AuthCode>P12345</AuthCode><HostRefNum>123456789012</HostRefNum><ProcReturnCode>00</ProcReturnCode><TransId>24321ABC</TransId><ErrMsg></ErrMsg><Extra><SETTLEID>1</SETTLEID></Extra></CC5Response>

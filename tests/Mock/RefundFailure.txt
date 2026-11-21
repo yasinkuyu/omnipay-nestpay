@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Content-Type: text/xml;charset=UTF-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CC5Response><OrderId>ORD-1</OrderId><Response>Error</Response><ProcReturnCode>99</ProcReturnCode><ErrMsg>Iade icin eslesen siparis bulunamadi</ErrMsg><Extra><ERRORCODE>CORE-2008</ERRORCODE></Extra></CC5Response>

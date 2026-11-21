@@ -1,224 +1,106 @@
 # Omnipay: NestPay
 
-**NestPay (EST) (İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus, Ziraat Bankası sanal pos) gateway for Omnipay payment processing library**
+**NestPay / EST (Payten, Asseco) sanal POS sürücüsü — [Omnipay](https://github.com/thephpleague/omnipay) v3**
 
-[![Latest Stable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/stable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
-[![Total Downloads](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/downloads)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
-[![Latest Unstable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/unstable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay) 
+[![Latest Stable Version](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/v/stable)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
+[![Total Downloads](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/downloads)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 [![License](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/license)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 
-[Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements NestPay (Turkish Payment Gateways) support for Omnipay.
+NestPay altyapısını kullanan bankalar: **İş Bankası, Akbank, Halkbank, Ziraat Bankası, TEB, QNB Finansbank, ING, Şekerbank, Anadolubank** (listede olmayan banka için `endpoint` ile est3Dgate adresi verilebilir).
 
+- **3D Pay Hosting** (varsayılan): kart bilgisi bankanın ödeme sayfasında girilir, sizin sunucunuzdan geçmez.
+- `3d_pay` ve `3d` modelleri, taksit, ön provizyon (PreAuth / PostAuth)
+- **ver3** imza (SHA-512), bankanın dönüşünün imza doğrulaması
+- XML API ile iade, iptal, provizyon kapama ve sipariş durumu sorgusu
 
-NestPay (eski adıyla EST) altyapısını kullanan Türkiye bankaları için Omnipay kütüphanesi. Desteklenmesi hedeflenen bankalar; İş Bankası, Akbank, Finansbank, Denizbank, Kuveytturk, Halkbank, Anadolubank, ING Bank, Citibank, Cardplus, Ziraat Bankası
+## Kurulum
 
+```bash
+composer require yasinkuyu/omnipay-nestpay:^3.0 php-http/guzzle7-adapter
+```
 
-## Installation
+PHP 8.1+ ve `omnipay/common` ^3.3 gerekir. 2.x sürümü (`omnipay/common` 2) `yasin` dalında duruyor.
 
-    composer require yasinkuyu/omnipay-nestpay:~2.0
+## Kullanım
 
-## Basic Usage
+```php
+use Omnipay\Omnipay;
 
-The following gateways are provided by this package:
+$gateway = Omnipay::create('NestPay');
+$gateway->initialize([
+    'bank'      => 'isbank',        // isbank, akbank, halkbank, ziraat, teb, finansbank, ingbank, sekerbank, anadolubank
+    'clientId'  => '700655000200',  // mağaza numarası
+    'storeKey'  => 'TRPS0200',      // 3D güvenlik anahtarı
+    'username'  => 'APIUSER',       // XML API kullanıcısı (iade / iptal / sorgu için)
+    'password'  => 'APIPASS',
+    'testMode'  => true,            // Payten test ortamı
+]);
+```
 
-* NestPay
-    - İş Bankası 
-    - Akbank
-    - Finansbank 
-    - Denizbank
-    - Kuveytturk 
-    - Halkbank
-    - Anadolubank 
-    - ING Bank 
-    - Citibank 
-    - Cardplus
-    - Ziraat Bankası
+### 1. Ödemeyi başlatma
 
-Gateway Methods
+```php
+$response = $gateway->purchase([
+    'amount'        => '149.90',
+    'currency'      => 'TRY',
+    'transactionId' => 'SIP-10045',                    // oid
+    'returnUrl'     => 'https://magaza.com/odeme/donus', // okUrl (failUrl verilmezse o da)
+    'cancelUrl'     => 'https://magaza.com/odeme/donus', // failUrl (isteğe bağlı)
+    'notifyUrl'     => 'https://magaza.com/odeme/bildirim', // callbackUrl (isteğe bağlı, önerilir)
+    'installment'   => 3,
+    'refreshTime'   => 3,                               // sonuç ekranında bekleme (sn)
+    'card'          => ['email' => 'ali@ornek.com', 'billingFirstName' => 'Ali', 'billingLastName' => 'Kaya'],
+])->send();
 
-* authorize($options) - authorize an amount on the customer's card
-* capture($options) - capture an amount you have previously authorized
-* purchase($options) - authorize and immediately capture an amount on the customer's card
-* refund($options) - refund an already processed transaction
-* void($options) - generally can only be called up to 24 hours after submitting a transaction
-* credit($options) - money points processed transaction
-* settle($options) - settlement query processed transaction
+$response->redirect(); // bankaya otomatik POST eden form
+// ya da kendi formunuz: $response->getRedirectUrl(), $response->getRedirectData()
+```
 
-For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
-repository.
+### 2. Dönüşü doğrulama (okUrl / failUrl / callbackUrl)
 
-## Unit Tests
+```php
+$result = $gateway->completePurchase([
+    'transactionId' => 'SIP-10045', // isteğe bağlı: dönüşteki sipariş no ile karşılaştırılır
+    'amount'        => '149.90',    // isteğe bağlı: dönüşteki tutarla karşılaştırılır
+])->send();
 
-PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of the xUnit architecture for unit testing frameworks.
-
-## Sample App
-            <?php
-            
-            require __DIR__ . '/vendor/autoload.php';
-            
-            use Omnipay\Omnipay;
-            
-            $gateway = Omnipay::create('NestPay');
-            
-            $gateway->setBank("isbank");
-            $gateway->setUserName("api");
-            $gateway->setClientId("700658785");
-            $gateway->setPassword("TEST1111");
-            $gateway->setTestMode(TRUE);
-            
-            $options = [
-            	'number'        => '5406675406675403',
-            	'expiryMonth'   => '12',
-            	'expiryYear'    => '2022',
-            	'cvv'           => '000',
-            	'email'         => 'yasinkuyu@gmail.com',
-            	'firstname'     => 'Yasin',
-            	'lastname'      => 'Kuyu'
-            ];
-            
-            try {
-            		
-            	$response = $gateway->purchase(
-            	[
-            		//'installment'  => '', # Taksit
-            		//'moneypoints'  => 1.00, // Set money points (Maxi puan gir)
-            		'amount'        => 12.00,
-            		'type'          => 'Auth',
-            		'orderid'       => 'ORDER-3651233',
-            		'card'          => $options
-            	]
-            	)->send();
-            	/*
-            	$response = $gateway->authorize(
-            	[
-            		'type'          => 'PostAuth',
-            		'orderid'       => 'ORDER-365123',
-            		'card'          => $options
-            	]
-            	)->send();
-            
-            	$response = $gateway->capture(
-            	[
-            		'orderid'       => 'ORDER-365123',
-            		'amount'        => 1.00,
-            		'currency'      => 'TRY',
-            		'card'          => $options
-            	]
-            	)->send();
-            
-            
-            	$response = $gateway->refund(
-            	[
-            		'orderid'       => 'ORDER-365123',
-            		'amount'        => 1.00,
-            		'currency'      => 'TRY',
-            		'card'          => $options
-            	]
-            	)->send();
-            
-            	$response = $gateway->credit(
-            	[
-            		'orderid'       => 'ORDER-365123',
-            		'amount'        => 1.00,
-            		'currency'      => 'TRY', // Optional (default parameter TRY)
-            		'card'          => $options
-            	]
-            	)->send();
-            
-            	$response = $gateway->void(
-            	[
-            		'orderid'       => 'ORDER-365123',
-            		'amount'        => 1.00,
-            		'currency'      => 'TRY',
-            		'card'          => $options
-            	]
-            	)->send();
-            
-            	$response = $gateway->credit(
-            	[
-            		'amount'        => 1.00,
-            		'card'          => $options
-            	]
-            	)->send();
-            
-            	$response = $gateway->settle(
-            	[
-            		'settlement'   => true,
-            		'card'         => $options
-            	]
-            	)->send();
-            
-            	$response = $gateway->money(
-            	[
-            		'moneypoints'  => "1",
-            		'card'         => $options
-            	]
-            	)->send();
-            	*/
-            	 
-                if ($response->isSuccessful()) {
-                    echo "Successful";
-            		
-                } elseif ($response->isRedirect()) {
-                    $response->redirect();
-            		
-                } else {
-                    exit($response->getMessage());
-                }
-            } catch (\Exception $e) {
-                exit($e->getMessage());
-            }
-            
-            // Debug
-            //var_dump($response);
-
-
-
-## Posnet
-Posnet (Yapı Kredi, Vakıfbank, Anadolubank) gateway for Omnipay payment processing library
-https://github.com/yasinkuyu/omnipay-posnet
-
-## Iyzico
-Iyzico gateway for Omnipay payment processing library
-https://github.com/yasinkuyu/omnipay-iyzico
-
-## GVP (Granti Sanal Pos)
-Gvp (Garanti, Denizbank, TEB, ING, Şekerbank, TFKB) gateway for Omnipay payment processing library
-https://github.com/yasinkuyu/omnipay-gvp
-
-## BKM Express
-BKM Express gateway for Omnipay payment processing library
-https://github.com/yasinkuyu/omnipay-bkm
-
-## Paratika
-Paratika (Asseco) (Akbank, TEB, Halkbank, Finansbank, İş Bankası, Şekerbank, Vakıfbank ) gateway for Omnipay payment processing library
-https://github.com/yasinkuyu/omnipay-paratika
-
-
-## Composer Installation
-
-Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply add it
-to your `composer.json` file:
-
-```json
-{
-    "require": {
-        "yasinkuyu/omnipay-nestpay": "~2.0"
-    }
+if (!$result->isVerified()) {
+    // imza tutmadı: sahte ya da bozuk dönüş, sonucu kaydetmeyin
+} elseif ($result->isSuccessful()) {
+    $result->getTransactionReference(); // TransId
+    $result->getMaskedCard();           // 454671***7894
+    $result->getInstallment();
+} else {
+    $result->getMessage();              // bankanın ret iletisi ya da 3D hatası
 }
 ```
 
-And run composer to update your dependencies:
+Bildirim adresinde `acceptNotification()` aynı doğrulamayı yapar; bankaya `Approved` metniyle yanıt verin.
 
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar update
+Alanlar istek gövdesinden adları bozulmadan okunur (PHP `TDS2.authTimestamp` gibi adlardaki noktayı alt çizgiye çevirir ve imza doğrulaması bozulur). Çerçeveniz gövdeyi tükettiyse alanları `['fields' => $alanlar]` ile verin.
 
+### İade, iptal, sorgu
 
-## Support
+```php
+$gateway->void(['transactionId' => 'SIP-10045'])->send();                         // aynı gün, gün sonundan önce
+$gateway->refund(['transactionId' => 'SIP-10045', 'amount' => '50.00'])->send(); // kısmi / sonraki gün
+$gateway->capture(['transactionId' => 'SIP-10045'])->send();                     // ön provizyonu kapat
+$status = $gateway->fetchTransaction(['transactionId' => 'SIP-10045'])->send();
+$status->getExtra(); // ORDERSTATUS, TRANS_STAT …
+```
 
-If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/yasinkuyu/omnipay-nestpay/issues),
-or better yet, fork the library and submit a pull request.
+`isReadable()` false ise bankanın yanıtı okunamadı: işlem gerçekleşmiş olabilir, otomatik tekrar denemeyin.
 
-## Roadmap
-3D Secure payment
+## Test ortamı
+
+Payten test ortamı (`testMode => true`): mağaza no `700655000200`, anahtar `TRPS0200`, API kullanıcısı `ISBANKAPI` / `ISBANK07`, kart `4546 7112 3456 7894`, 12/26, CVV `000`.
+
+## Testler
+
+```bash
+composer install && vendor/bin/phpunit
+```
+
+## Lisans
+
+MIT — Yasin Kuyu
