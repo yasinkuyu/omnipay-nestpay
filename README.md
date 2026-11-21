@@ -210,6 +210,7 @@ vendor/bin/phpunit
 ## Diğer Omnipay paketleri
 
 - **[Omnipay: GVP (Garanti BBVA)](https://github.com/yasinkuyu/omnipay-gvp)** — Garanti BBVA sanal POS'u; Ortak Ödeme Sayfası
+- **[Omnipay: QNB](https://github.com/yasinkuyu/omnipay-qnb)** — QNB sanal POS'u (PayFor); ortak ödeme sayfası
 - **[Omnipay: Paratika](https://github.com/yasinkuyu/omnipay-paratika)** — Paratika, VakıfPayS ve ZiraatPay ortak ödeme sayfası
 - **[Omnipay: Akbank](https://github.com/yasinkuyu/omnipay-akbank)** — Akbank sanal POS'u (yeni altyapı); ortak ödeme sayfası
 - **[Omnipay: Paycell SDK](https://github.com/yasinkuyu/omnipay-paycell-sdk)** — Turkcell Paycell ödeme sayfası (Web SDK)
