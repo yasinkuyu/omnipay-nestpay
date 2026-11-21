@@ -207,9 +207,7 @@ composer install
 vendor/bin/phpunit
 ```
 
-## Diğer Omnipay paketleri
-
-Aynı geliştiricinin diğer Omnipay sürücüleri:
+## Diğer Omnipay paketlerim
 
 - **[Omnipay: GVP (Garanti BBVA)](https://github.com/yasinkuyu/omnipay-gvp)** — Garanti BBVA sanal POS'u; Ortak Ödeme Sayfası
 - **[Omnipay: Paratika](https://github.com/yasinkuyu/omnipay-paratika)** — Paratika, VakıfPayS ve ZiraatPay ortak ödeme sayfası
