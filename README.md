@@ -6,10 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/downloads)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 [![License](https://poser.pugx.org/yasinkuyu/omnipay-nestpay/license)](https://packagist.org/packages/yasinkuyu/omnipay-nestpay)
 
-> **English:** Omnipay v3 driver for Turkish banks running the NestPay (EST / Payten) virtual POS. Default model is
-> *3D Pay Hosting*: the card form is on the bank's page, so card data never touches your server. Includes ver3 (SHA-512)
-> signing, verification of the bank's callback, refund, void and order status. See the examples below — code is
-> self-explanatory; texts are in Turkish.
+**Türkçe** | [English](README_EN.md)
 
 ## Bu paket ne yapar?
 
@@ -201,7 +198,7 @@ adları bozulmadan okur, ayrıca bir şey yapmanız gerekmez.
 - Kart numarasıyla doğrudan (3D'siz) satış kaldırıldı; ödeme bankanın sayfasında alınır.
 - `completePurchase()` ve `acceptNotification()` eklendi; dönüşü artık paket doğrular.
 - `username` / `password` yalnız iade, iptal ve sorgu için gerekir.
-- 2.x `yasin` dalında duruyor: `composer require yasinkuyu/omnipay-nestpay:^2.0`
+- Eski sürümü (2.x) kullanmaya devam etmek isterseniz: `composer require yasinkuyu/omnipay-nestpay:^2.0`
 
 ## Testler
 
